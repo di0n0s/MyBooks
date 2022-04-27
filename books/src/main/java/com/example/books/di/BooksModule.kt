@@ -1,7 +1,7 @@
 package com.example.books.di
 
 import com.example.books.BuildConfig
-import com.example.books.data.MyBooksApiService
+import com.example.books.data.service.MyBooksApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
