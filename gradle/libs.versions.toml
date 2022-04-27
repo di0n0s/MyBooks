@@ -24,6 +24,9 @@ paging = "3.1.1"
 #Fragment-ktx
 fragmentKtx = "1.4.0"
 
+#Navigation
+navigation = "2.3.5"
+
 [libraries]
 # Plugins
 androidGradle = { module = "com.android.tools.build:gradle ", version.ref = "buildTools" }
@@ -70,4 +73,8 @@ paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 
 #Fragment-ktx
 fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+
+#Navigation
+navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 

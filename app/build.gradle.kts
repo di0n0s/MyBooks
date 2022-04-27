@@ -37,15 +37,18 @@ android {
 }
 
 dependencies {
+    ///Visibility
+    implementation(project(":books"))
 
     //Kotlin
     implementation(libs.kotlinStdLib)
 
-    //Material
-    implementation(libs.material)
-
     //Hilt
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
+
+    //Navigation
+    implementation(libs.navigationFragment)
+    implementation(libs.navigationUi)
 
 }
