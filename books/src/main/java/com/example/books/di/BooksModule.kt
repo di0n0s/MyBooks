@@ -63,7 +63,7 @@ abstract class BooksModule {
             }
 
             return Retrofit.Builder()
-                .baseUrl("https://api.twitch.tv/helix/")
+                .baseUrl("https://api.book.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(builder.build())
         }
