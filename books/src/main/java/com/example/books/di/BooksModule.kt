@@ -2,6 +2,9 @@ package com.example.books.di
 
 import com.example.books.BuildConfig
 import com.example.books.data.service.MyBooksApiService
+import com.example.books.data.source.BooksDataSource
+import com.example.books.data.source.BooksNetworkDataSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.BINARY)
@@ -29,7 +33,7 @@ annotation class MainDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class BooksModule {
+abstract class BooksModule {
 
     companion object {
         @Provides
@@ -88,5 +92,9 @@ class BooksModule {
         fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     }
+
+    @Binds
+    @Named("BooksNetworkDataSource")
+    abstract fun bindBooksNetworkDataSource(booksNetworkDataSource: BooksNetworkDataSource): BooksDataSource
 
 }
