@@ -5,6 +5,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+enableFeaturePreview("VERSION_CATALOGS")
 rootProject.name = "MyBooks"
 include ':app'
-enableFeaturePreview("VERSION_CATALOGS")
+include ':books'
