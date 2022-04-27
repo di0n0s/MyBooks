@@ -68,4 +68,8 @@ dependencies {
     //Room
     implementation(libs.room)
     annotationProcessor(libs.roomCompiler)
+    implementation(libs.roomPaging)
+
+    //Paging
+    implementation(libs.paging)
 }

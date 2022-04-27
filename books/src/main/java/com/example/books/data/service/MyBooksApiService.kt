@@ -10,8 +10,8 @@ interface MyBooksApiService {
 
     @GET("/api/v1/items")
     suspend fun getBookList(
-        @Query("offset") start: Int,
-        @Query("count") loadSize: Int
+        @Query("offset") start: Int?,
+        @Query("count") loadSize: Int? = null
     ): List<BookListDto>
 
     @GET("/api/v1/items/{id}")

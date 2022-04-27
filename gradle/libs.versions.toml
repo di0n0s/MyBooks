@@ -18,6 +18,9 @@ coroutines = "1.5.2"
 #Room
 room = "2.4.2"
 
+#Paging
+paging = "3.1.1"
+
 [libraries]
 # Plugins
 androidGradle = { module = "com.android.tools.build:gradle ", version.ref = "buildTools" }
@@ -55,3 +58,7 @@ coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android
 #Room
 room = { module = "androidx.room:room-runtime", version.ref = "room" }
 roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+roomPaging = { module = "androidx.room:room-paging", version.ref = "room" }
+
+#Paging
+paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
