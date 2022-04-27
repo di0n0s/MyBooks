@@ -49,6 +49,12 @@ dependencies {
     //Kotlin
     implementation(libs.kotlinStdLib)
 
+    //AndroidX
+    implementation(libs.constraintLayout)
+
+    ///Material
+    implementation(libs.material)
+
     //Hilt
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)

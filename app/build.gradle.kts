@@ -41,9 +41,6 @@ dependencies {
     //Kotlin
     implementation(libs.kotlinStdLib)
 
-    //AndroidX
-    implementation(libs.appCompat)
-
     //Material
     implementation(libs.material)
 
