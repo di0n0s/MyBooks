@@ -9,3 +9,4 @@ enableFeaturePreview("VERSION_CATALOGS")
 rootProject.name = "MyBooks"
 include ':app'
 include ':books'
+include ':core'
