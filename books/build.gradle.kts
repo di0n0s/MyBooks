@@ -53,11 +53,14 @@ dependencies {
     //Kotlin
     implementation(libs.kotlinStdLib)
 
-    //AndroidX
+    //ConstraintLayout
     implementation(libs.constraintLayout)
 
     ///Material
     implementation(libs.material)
+
+    //FragmentKtx
+    implementation(libs.fragmentKtx)
 
     //Hilt
     implementation(libs.hilt)

@@ -8,10 +8,11 @@ import com.example.books.data.entity.BookListTuple
 import com.example.books.data.room.BooksDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 @HiltViewModel
-class BookListViewModel(
+class BookListViewModel @Inject constructor(
     private val remoteMediator: BookRemoteMediator,
     private val booksDao: BooksDao
 ) : ViewModel() {
