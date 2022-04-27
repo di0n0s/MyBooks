@@ -12,7 +12,7 @@ import com.example.books.data.entity.BookListTuple
 interface BooksDao {
 
     @Query("SELECT id,title FROM bookentity")
-    suspend fun getBookList(): PagingSource<Int, BookListTuple>
+    fun getBookList(): PagingSource<Int, BookListTuple>
 
     @Query("SELECT * FROM bookentity WHERE id IN (:id)")
     suspend fun getBook(
