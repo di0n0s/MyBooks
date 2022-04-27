@@ -14,6 +14,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -54,4 +64,8 @@ dependencies {
 
     //Coroutines
     implementation(libs.coroutinesAndroid)
+
+    //Room
+    implementation(libs.room)
+    annotationProcessor(libs.roomCompiler)
 }
