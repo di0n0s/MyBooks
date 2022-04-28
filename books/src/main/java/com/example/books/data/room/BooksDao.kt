@@ -6,19 +6,24 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.books.data.entity.BookEntity
-import com.example.books.data.entity.BookListTuple
 
 @Dao
 interface BooksDao {
 
-    @Query("SELECT id,title FROM bookentity")
-    fun getBookList(): PagingSource<Int, BookListTuple>
+    @Query("SELECT * FROM books")
+    fun getPagedBookList(): PagingSource<Int, BookEntity>
 
-    @Query("SELECT * FROM bookentity WHERE id = :id")
+    @Query("SELECT * FROM books")
+    fun getBookList(): List<BookEntity>
+
+    @Query("SELECT * FROM books WHERE id = :id")
     suspend fun getBook(
         id: String,
     ): BookEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg books: BookEntity)
+    suspend fun insertAll(books: List<BookEntity>)
+
+    @Query("DELETE FROM books")
+    suspend fun clearAll()
 }

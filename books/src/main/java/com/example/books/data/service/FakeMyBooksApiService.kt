@@ -2,29 +2,41 @@ package com.example.books.data.service
 
 import com.example.books.data.dto.BookDto
 import com.example.books.data.dto.BookListDto
+import com.example.books.data.dto.BookListResponse
 import javax.inject.Inject
 
 class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
 
     private val list = mutableListOf<BookListDto>()
 
-    override suspend fun getBookList(start: Int?, loadSize: Int?): List<BookListDto> {
-        var startNumber = 1
-        var loadSizeNumber = 20
+    init {
+        for (i in 1 until 1000) {
+            list.add(BookListDto(id = i, title = "Book $i"))
+        }
+    }
+
+    override suspend fun getBookList(start: Int?, loadSize: Int?): BookListResponse {
+        var loadSizeNumber = 100
+        var startNumber = 0
 
         if (start != null) {
-            startNumber = start
+            startNumber = start - 1
         }
 
         if (loadSize != null) {
             loadSizeNumber = loadSize
+
+            if (startNumber + loadSizeNumber > list.size) {
+                loadSizeNumber = list.size - startNumber
+            }
         }
 
-        for (i in startNumber until startNumber + loadSizeNumber) {
-            list.add(BookListDto(id = i, title = "Book $i"))
-        }
 
-        return list
+        val subList = list.subList(startNumber, startNumber + loadSizeNumber)
+
+        val remainingBooks = list.size - subList.last().id
+
+        return BookListResponse(subList, remainingBooks)
     }
 
 

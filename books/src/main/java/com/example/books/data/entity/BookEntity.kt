@@ -1,14 +1,17 @@
 package com.example.books.data.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "books")
 data class BookEntity(
-    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
-    @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "image_url") val imageUrl: String? = null,
-    @ColumnInfo(name = "author") val author: String? = null,
-    @ColumnInfo(name = "price") val price: Double? = null
-)
+    val id: Int,
+    val title: String,
+    val imageUrl: String? = null,
+    val author: String? = null,
+    val price: Double? = null
+) {
+    @PrimaryKey(autoGenerate = true)
+    var databaseId: Int = 0
+
+}

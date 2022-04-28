@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
-import com.example.books.data.entity.BookListTuple
+import com.example.books.data.entity.BookEntity
 import com.example.books.databinding.ItemBookBinding
 
 class BookViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -15,7 +15,7 @@ class BookViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
 
     private val binding = ItemBookBinding.bind(itemView)
 
-    fun bind(book: BookListTuple?) {
+    fun bind(book: BookEntity?) {
         with(binding) {
             numberTextView.text = book?.id.toString()
             titleTextView.text = book?.title

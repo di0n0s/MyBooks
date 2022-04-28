@@ -14,7 +14,6 @@ import com.example.books.presentation.adapter.BookListAdapter
 import com.example.books.presentation.viewModel.BookListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BookListFragment : Fragment() {
@@ -57,7 +56,7 @@ class BookListFragment : Fragment() {
     }
 
     private fun setObserver() {
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenCreated {
             viewModel.pagingDataFlow.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
             }

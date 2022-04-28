@@ -3,19 +3,19 @@ package com.example.books.presentation.adapter
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.books.data.entity.BookListTuple
+import com.example.books.data.entity.BookEntity
 import com.example.books.presentation.ui.BookViewHolder
 
-class BookListAdapter : PagingDataAdapter<BookListTuple, BookViewHolder>(differCallback) {
+class BookListAdapter : PagingDataAdapter<BookEntity, BookViewHolder>(differCallback) {
 
     companion object {
-        val differCallback = object : DiffUtil.ItemCallback<BookListTuple>() {
-            override fun areItemsTheSame(oldItem: BookListTuple, newItem: BookListTuple): Boolean =
+        val differCallback = object : DiffUtil.ItemCallback<BookEntity>() {
+            override fun areItemsTheSame(oldItem: BookEntity, newItem: BookEntity): Boolean =
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(
-                oldItem: BookListTuple,
-                newItem: BookListTuple
+                oldItem: BookEntity,
+                newItem: BookEntity
             ): Boolean = oldItem == newItem
 
         }
