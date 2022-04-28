@@ -14,7 +14,7 @@ interface BooksDao {
     @Query("SELECT id,title FROM bookentity")
     fun getBookList(): PagingSource<Int, BookListTuple>
 
-    @Query("SELECT * FROM bookentity WHERE id IN (:id)")
+    @Query("SELECT * FROM bookentity WHERE id = :id")
     suspend fun getBook(
         id: String,
     ): BookEntity

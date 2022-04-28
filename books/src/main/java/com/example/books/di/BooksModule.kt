@@ -1,6 +1,7 @@
 package com.example.books.di
 
 import com.example.books.BuildConfig
+import com.example.books.data.service.FakeMyBooksApiService
 import com.example.books.data.service.MyBooksApiService
 import com.example.books.data.source.BooksDataSource
 import com.example.books.data.source.BooksNetworkDataSource
@@ -69,15 +70,15 @@ abstract class BooksModule {
         }
 
 
-        @Provides
-        fun provideMyBooksApiService(
-            retrofitBuilder: Retrofit.Builder,
-        ): MyBooksApiService {
-
-            return retrofitBuilder
-                .build()
-                .create(MyBooksApiService::class.java)
-        }
+//        @Provides
+//        fun provideMyBooksApiService(
+//            retrofitBuilder: Retrofit.Builder,
+//        ): MyBooksApiService {
+//
+//            return retrofitBuilder
+//                .build()
+//                .create(MyBooksApiService::class.java)
+//        }
 
         @DefaultDispatcher
         @Provides
@@ -96,5 +97,8 @@ abstract class BooksModule {
     @Binds
     @Named("BooksNetworkDataSource")
     abstract fun bindBooksNetworkDataSource(booksNetworkDataSource: BooksNetworkDataSource): BooksDataSource
+
+    @Binds
+    abstract fun bindFakeMyBooksApiService(fakeBooksApiService: FakeMyBooksApiService): MyBooksApiService
 
 }

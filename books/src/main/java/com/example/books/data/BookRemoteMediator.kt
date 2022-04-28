@@ -10,10 +10,13 @@ import com.example.books.data.room.BooksDao
 import com.example.books.data.service.MyBooksApiService
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class BookRemoteMediator(private val dao: BooksDao, private val apiService: MyBooksApiService) :
-    RemoteMediator<Int, BookListTuple>() {
+class BookRemoteMediator @Inject constructor(
+    private val dao: BooksDao,
+    private val apiService: MyBooksApiService
+) : RemoteMediator<Int, BookListTuple>() {
 
     override suspend fun load(
         loadType: LoadType,
