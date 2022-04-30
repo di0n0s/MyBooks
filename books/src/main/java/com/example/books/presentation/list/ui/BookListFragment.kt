@@ -1,4 +1,4 @@
-package com.example.books.presentation.ui
+package com.example.books.presentation.list.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
-import com.example.books.presentation.adapter.BookListAdapter
-import com.example.books.presentation.adapter.PaginationListener
-import com.example.books.presentation.viewModel.BookListViewModel
-import com.example.books.presentation.viewModel.GetPagedBookListState
-import com.example.books.presentation.viewModel.UserIntent
+import com.example.books.presentation.list.adapter.BookListAdapter
+import com.example.books.presentation.list.adapter.PaginationListener
+import com.example.books.presentation.list.viewModel.BookListViewModel
+import com.example.books.presentation.list.viewModel.GetPagedBookListState
+import com.example.books.presentation.list.viewModel.UserIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

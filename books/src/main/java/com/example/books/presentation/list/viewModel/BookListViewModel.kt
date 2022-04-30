@@ -1,9 +1,9 @@
-package com.example.books.presentation.viewModel
+package com.example.books.presentation.list.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.data.source.BooksDataSource
-import com.example.books.presentation.BookPaginationVo
+import com.example.books.presentation.list.vo.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

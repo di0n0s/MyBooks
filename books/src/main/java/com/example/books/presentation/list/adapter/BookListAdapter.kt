@@ -1,10 +1,10 @@
-package com.example.books.presentation.adapter
+package com.example.books.presentation.list.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.books.presentation.BookPaginationVo
-import com.example.books.presentation.ui.BookViewHolder
-import com.example.books.presentation.ui.ProgressViewHolder
+import com.example.books.presentation.list.ui.BookViewHolder
+import com.example.books.presentation.list.ui.ProgressViewHolder
+import com.example.books.presentation.list.vo.BookPaginationVo
 
 
 class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :

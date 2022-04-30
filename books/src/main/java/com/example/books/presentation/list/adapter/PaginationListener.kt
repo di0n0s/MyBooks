@@ -1,4 +1,4 @@
-package com.example.books.presentation.adapter
+package com.example.books.presentation.list.adapter
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
