@@ -41,6 +41,12 @@ class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
 
     override fun getItemCount(): Int = list.size
 
+    fun addItems(items: List<BookPaginationVo>) {
+        val positionStart = list.size + 1
+        list.addAll(items)
+        notifyItemRangeInserted(positionStart, items.size)
+    }
+
 
     fun addLoading() {
         isLoaderVisible = true
@@ -50,8 +56,10 @@ class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
 
     fun removeLoading() {
         isLoaderVisible = false
-        list.removeAll { it is BookPaginationVo.Loading }
-        notifyItemRemoved(list.size - 1)
+        val wasRemoved = list.removeAll { it is BookPaginationVo.Loading }
+        if (wasRemoved) {
+            notifyItemRemoved(list.size - 1)
+        }
     }
 
 }

@@ -2,7 +2,7 @@ package com.example.books.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.source.BooksNetworkDataSource
+import com.example.books.data.source.BooksDataSource
 import com.example.books.presentation.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +16,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class BookListViewModel @Inject constructor(
-    @Named("BooksNetworkDataSource") private val booksNetworkDataSource: BooksNetworkDataSource
+    @Named("BooksNetworkDataSource") private val booksNetworkDataSource: BooksDataSource
 ) : ViewModel() {
 
     val userIntent = Channel<UserIntent>(Channel.UNLIMITED)
@@ -24,6 +24,10 @@ class BookListViewModel @Inject constructor(
     private val _bookListState = MutableStateFlow<GetPagedBookListState>(GetPagedBookListState.Idle)
     val bookListState: StateFlow<GetPagedBookListState>
         get() = _bookListState
+
+    init {
+        handleUserIntent()
+    }
 
     private fun handleUserIntent() {
         viewModelScope.launch {

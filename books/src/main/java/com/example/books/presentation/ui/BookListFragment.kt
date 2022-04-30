@@ -8,12 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
 import com.example.books.presentation.adapter.BookListAdapter
+import com.example.books.presentation.adapter.PaginationListener
 import com.example.books.presentation.viewModel.BookListViewModel
+import com.example.books.presentation.viewModel.GetPagedBookListState
+import com.example.books.presentation.viewModel.UserIntent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BookListFragment : Fragment() {
@@ -22,11 +28,42 @@ class BookListFragment : Fragment() {
     private var _binding: FragmentBookListBinding? = null
     private val binding get() = _binding
 
-    //Adapter
+    private var recyclerView: RecyclerView? = null
+
+    //Variables
     private var adapter: BookListAdapter? = null
+    private var isLoading = false
+    private var isLastPage = false
 
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        collectState()
+    }
+
+    private fun collectState() {
+        lifecycleScope.launch {
+            viewModel.bookListState.collect {
+                when (it) {
+                    GetPagedBookListState.Idle -> {}
+                    GetPagedBookListState.Loading -> {}
+                    is GetPagedBookListState.Success -> {
+                        adapter?.removeLoading()
+                        adapter?.addItems(it.list)
+                        if (it.list.isEmpty()) {
+                            isLastPage = true
+                        } else {
+                            adapter?.addLoading()
+                        }
+                        isLoading = false
+                    }
+                    is GetPagedBookListState.Error -> {}
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,17 +72,35 @@ class BookListFragment : Fragment() {
     ): View? {
         onInitView(inflater, container)
         setToolbar()
-        setObserver()
+        getFirstPage()
         return binding?.root
     }
 
     private fun onInitView(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentBookListBinding.inflate(inflater, container, false)
+        recyclerView = binding?.recyclerView
         initAdapter()
     }
 
     private fun initAdapter() {
-        adapter = BookListAdapter()
+        adapter = BookListAdapter(arrayListOf())
+        recyclerView?.adapter = adapter
+        recyclerView?.addOnScrollListener(object :
+            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+                isLoading = true
+                val pageSize = this.pageSize
+                lifecycleScope.launch {
+                    val start = adapter?.itemCount
+                    viewModel.userIntent.send(UserIntent.GetPagedBookList(start, pageSize))
+                }
+            }
+
+            override fun isLastPage(): Boolean = isLastPage
+
+            override fun isLoading(): Boolean = isLoading
+
+        })
     }
 
     private fun setToolbar() {
@@ -55,11 +110,10 @@ class BookListFragment : Fragment() {
         }
     }
 
-    private fun setObserver() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.pagingDataFlow.collectLatest { pagingData ->
-                adapter?.submitData(pagingData)
-            }
+    private fun getFirstPage() {
+        lifecycleScope.launch {
+            viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 10))
+
         }
     }
 
