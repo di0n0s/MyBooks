@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
@@ -17,6 +20,7 @@ import com.example.books.presentation.list.adapter.PaginationListener
 import com.example.books.presentation.list.viewModel.BookListViewModel
 import com.example.books.presentation.list.viewModel.GetPagedBookListState
 import com.example.books.presentation.list.viewModel.UserIntent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -29,6 +33,7 @@ class BookListFragment : Fragment() {
     private val binding get() = _binding
 
     private var recyclerView: RecyclerView? = null
+    private var fab: FloatingActionButton? = null
 
     //Variables
     private var adapter: BookListAdapter? = null
@@ -73,12 +78,14 @@ class BookListFragment : Fragment() {
         onInitView(inflater, container)
         setToolbar()
         getFirstPage()
+        setOnClickListener()
         return binding?.root
     }
 
     private fun onInitView(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentBookListBinding.inflate(inflater, container, false)
         recyclerView = binding?.recyclerView
+        fab = binding?.fab
         initAdapter()
     }
 
@@ -114,6 +121,15 @@ class BookListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 10))
 
+        }
+    }
+
+    private fun setOnClickListener() {
+        fab?.setOnClickListener {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(getString(com.example.core.R.string.create_book_fragment_uri).toUri())
+                .build()
+            findNavController().navigate(request)
         }
     }
 

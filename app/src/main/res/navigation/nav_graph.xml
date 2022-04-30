@@ -7,6 +7,19 @@
     <fragment
         android:id="@+id/bookListFragment"
         android:name="com.example.books.presentation.list.ui.BookListFragment"
-        android:label="SignInFragment" />
+        android:label="SignInFragment">
+        <action
+            android:id="@+id/action_bookListFragment_to_createBookFragment"
+            app:destination="@id/createBookFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createBookFragment"
+        android:name="com.example.books.presentation.create.ui.CreateBookFragment"
+        android:label="CreateBookFragment">
+        <deepLink app:uri="@string/create_book_fragment_uri" />
+
+    </fragment>
+
 
 </navigation>
