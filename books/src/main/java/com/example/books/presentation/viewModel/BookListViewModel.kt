@@ -1,35 +1,67 @@
 package com.example.books.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.example.books.data.BookRemoteMediator
-import com.example.books.data.entity.BookEntity
-import com.example.books.data.room.AppDatabase
-import com.example.books.data.service.MyBooksApiService
+import androidx.lifecycle.viewModelScope
+import com.example.books.data.source.BooksNetworkDataSource
+import com.example.books.presentation.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
-@OptIn(ExperimentalPagingApi::class)
 @HiltViewModel
 class BookListViewModel @Inject constructor(
-    private val db: AppDatabase,
-    private val apiService: MyBooksApiService
+    @Named("BooksNetworkDataSource") private val booksNetworkDataSource: BooksNetworkDataSource
 ) : ViewModel() {
 
-    val pagingDataFlow: Flow<PagingData<BookEntity>> by lazy { return@lazy getBookListFlow() }
+    val userIntent = Channel<UserIntent>(Channel.UNLIMITED)
 
-    private fun getBookListFlow(): Flow<PagingData<BookEntity>> {
-        val pager = Pager(
-            config = PagingConfig(pageSize = 100),
-            remoteMediator = BookRemoteMediator(db, apiService)
-        ) {
-            db.booksDao().getPagedBookList()
+    private val _bookListState = MutableStateFlow<GetPagedBookListState>(GetPagedBookListState.Idle)
+    val bookListState: StateFlow<GetPagedBookListState>
+        get() = _bookListState
+
+    private fun handleUserIntent() {
+        viewModelScope.launch {
+            userIntent.consumeAsFlow().collect {
+                when (it) {
+                    is UserIntent.GetPagedBookList -> getPagedBookList(it.start, it.loadSize)
+                }
+            }
         }
-
-        return pager.flow
     }
+
+    private fun getPagedBookList(start: Int?, loadSize: Int) {
+        viewModelScope.launch {
+            _bookListState.value = GetPagedBookListState.Loading
+
+            _bookListState.value = try {
+                val response = booksNetworkDataSource.getBookList(start ?: 0, loadSize).map { dto ->
+                    BookPaginationVo.BookVo(
+                        id = dto.id.toString(),
+                        title = dto.title
+                    )
+                }
+                GetPagedBookListState.Success(response)
+            } catch (e: Exception) {
+                GetPagedBookListState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+}
+
+sealed class UserIntent {
+    data class GetPagedBookList(val start: Int?, val loadSize: Int) : UserIntent()
+}
+
+sealed class GetPagedBookListState {
+    object Idle : GetPagedBookListState()
+    object Loading : GetPagedBookListState()
+    data class Success(val list: List<BookPaginationVo>) : GetPagedBookListState()
+    data class Error(val error: String?) : GetPagedBookListState()
 }
