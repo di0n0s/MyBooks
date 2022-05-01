@@ -1,4 +1,4 @@
-package com.example.books.presentation.ui
+package com.example.books.presentation.list.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

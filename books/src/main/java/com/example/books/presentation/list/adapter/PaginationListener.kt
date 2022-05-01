@@ -1,13 +1,12 @@
-package com.example.books.presentation.adapter
+package com.example.books.presentation.list.adapter
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class PaginationListener(private val linearLayoutManager: LinearLayoutManager) :
-    RecyclerView.OnScrollListener() {
-
-    val pageStart = 1
-    val pageSize = 10
+abstract class PaginationListener(
+    private val linearLayoutManager: LinearLayoutManager,
+    private val pageSize: Int
+) : RecyclerView.OnScrollListener() {
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

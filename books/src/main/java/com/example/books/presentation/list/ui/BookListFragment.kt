@@ -1,25 +1,32 @@
-package com.example.books.presentation.ui
+package com.example.books.presentation.list.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
-import com.example.books.presentation.adapter.BookListAdapter
-import com.example.books.presentation.adapter.PaginationListener
-import com.example.books.presentation.viewModel.BookListViewModel
-import com.example.books.presentation.viewModel.GetPagedBookListState
-import com.example.books.presentation.viewModel.UserIntent
+import com.example.books.presentation.list.adapter.BookListAdapter
+import com.example.books.presentation.list.adapter.PaginationListener
+import com.example.books.presentation.list.viewModel.BookListViewModel
+import com.example.books.presentation.list.viewModel.GetPagedBookListState
+import com.example.books.presentation.list.viewModel.UserIntent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+
+const val CREATE_BOOK_ID_RESULT = "CREATE_BOOK_ID_RESULT"
 
 @AndroidEntryPoint
 class BookListFragment : Fragment() {
@@ -29,6 +36,7 @@ class BookListFragment : Fragment() {
     private val binding get() = _binding
 
     private var recyclerView: RecyclerView? = null
+    private var fab: FloatingActionButton? = null
 
     //Variables
     private var adapter: BookListAdapter? = null
@@ -37,6 +45,10 @@ class BookListFragment : Fragment() {
 
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
+
+    companion object {
+        private const val PAGE_SIZE = 20
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,18 +60,22 @@ class BookListFragment : Fragment() {
             viewModel.bookListState.collect {
                 when (it) {
                     GetPagedBookListState.Idle -> {}
-                    GetPagedBookListState.Loading -> {}
+                    GetPagedBookListState.Loading -> {
+                        isLoading = true
+                    }
                     is GetPagedBookListState.Success -> {
                         adapter?.removeLoading()
-                        adapter?.addItems(it.list)
                         if (it.list.isEmpty()) {
                             isLastPage = true
                         } else {
+                            adapter?.addItems(it.list)
                             adapter?.addLoading()
                         }
                         isLoading = false
                     }
-                    is GetPagedBookListState.Error -> {}
+                    is GetPagedBookListState.Error -> {
+                        isLoading = false
+                    }
                 }
             }
         }
@@ -73,26 +89,26 @@ class BookListFragment : Fragment() {
         onInitView(inflater, container)
         setToolbar()
         getFirstPage()
+        setOnClickListener()
+        onNavigationResult()
         return binding?.root
     }
 
     private fun onInitView(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentBookListBinding.inflate(inflater, container, false)
         recyclerView = binding?.recyclerView
+        fab = binding?.fab
         initAdapter()
     }
 
     private fun initAdapter() {
-        adapter = BookListAdapter(arrayListOf())
+        adapter = BookListAdapter(viewModel.bookListVo)
         recyclerView?.adapter = adapter
         recyclerView?.addOnScrollListener(object :
-            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager) {
+            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager, PAGE_SIZE) {
             override fun loadMoreItems() {
-                isLoading = true
-                val pageSize = this.pageSize
                 lifecycleScope.launch {
-                    val start = adapter?.itemCount
-                    viewModel.userIntent.send(UserIntent.GetPagedBookList(start, pageSize))
+                    viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
                 }
             }
 
@@ -111,9 +127,33 @@ class BookListFragment : Fragment() {
     }
 
     private fun getFirstPage() {
-        lifecycleScope.launch {
-            viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 10))
+        if (viewModel.bookListVo.isEmpty()) {
+            lifecycleScope.launch {
+                viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
 
+            }
+        }
+    }
+
+    private fun setOnClickListener() {
+        fab?.setOnClickListener {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(getString(com.example.core.R.string.create_book_fragment_uri).toUri())
+                .build()
+            findNavController().navigate(request)
+        }
+    }
+
+    private fun onNavigationResult() {
+        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
+
+        savedStateHandle?.getLiveData<UUID>(
+            CREATE_BOOK_ID_RESULT
+        )?.observe(viewLifecycleOwner) { result ->
+            lifecycleScope.launch {
+                viewModel.userIntent.send(UserIntent.GetLastBookCreated(result))
+            }
+            savedStateHandle.remove<UUID>(CREATE_BOOK_ID_RESULT)
         }
     }
 

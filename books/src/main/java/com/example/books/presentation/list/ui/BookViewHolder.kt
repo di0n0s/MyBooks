@@ -1,11 +1,11 @@
-package com.example.books.presentation.ui
+package com.example.books.presentation.list.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.ItemBookBinding
-import com.example.books.presentation.BookPaginationVo
+import com.example.books.presentation.list.vo.BookPaginationVo
 
 class BookViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(

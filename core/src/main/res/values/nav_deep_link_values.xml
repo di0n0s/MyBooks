@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_book_fragment_uri">android-app://com.example.books/create_book_fragment</string>
+</resources>

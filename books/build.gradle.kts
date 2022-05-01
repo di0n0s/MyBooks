@@ -49,6 +49,8 @@ android {
 }
 
 dependencies {
+    //Visibility
+    implementation(project(":core"))
 
     //Kotlin
     implementation(libs.kotlinStdLib)
@@ -58,6 +60,10 @@ dependencies {
 
     ///Material
     implementation(libs.material)
+
+    //Navigation
+    implementation(libs.navigationFragment)
+    implementation(libs.navigationUi)
 
     //FragmentKtx
     implementation(libs.fragmentKtx)

@@ -1,4 +1,4 @@
-package com.example.books.presentation
+package com.example.books.presentation.list.vo
 
 sealed class BookPaginationVo {
     data class BookVo(

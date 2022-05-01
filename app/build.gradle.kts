@@ -39,6 +39,7 @@ android {
 dependencies {
     ///Visibility
     implementation(project(":books"))
+    implementation(project(":core"))
 
     //Kotlin
     implementation(libs.kotlinStdLib)

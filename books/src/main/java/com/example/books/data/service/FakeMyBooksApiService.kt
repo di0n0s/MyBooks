@@ -1,8 +1,9 @@
 package com.example.books.data.service
 
-import com.example.books.data.dto.BookDto
+import com.example.books.data.dto.BookDetailDto
 import com.example.books.data.dto.BookListDto
 import com.example.books.data.dto.BookListResponse
+import java.util.*
 import javax.inject.Inject
 
 class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
@@ -11,7 +12,7 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
 
     init {
         for (i in 1 until 1000) {
-            list.add(BookListDto(id = i, title = "Book $i"))
+            list.add(BookListDto(id = UUID.randomUUID(), title = "Book $i"))
         }
     }
 
@@ -31,16 +32,17 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
             }
         }
 
+        val toIndex = startNumber + loadSizeNumber
 
-        val subList = list.subList(startNumber, startNumber + loadSizeNumber)
+        val subList = list.subList(startNumber, toIndex)
 
-        val remainingBooks = list.size - subList.last().id
+        val remainingBooks = list.size - toIndex
 
         return BookListResponse(subList, remainingBooks)
     }
 
 
-    override suspend fun getBook(id: String): BookDto {
+    override suspend fun getBook(id: UUID): BookDetailDto {
         TODO("Not yet implemented")
     }
 }
