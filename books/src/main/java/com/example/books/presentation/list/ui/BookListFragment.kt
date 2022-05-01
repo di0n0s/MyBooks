@@ -65,10 +65,10 @@ class BookListFragment : Fragment() {
                     }
                     is GetPagedBookListState.Success -> {
                         adapter?.removeLoading()
-                        adapter?.addItems(it.list)
                         if (it.list.isEmpty()) {
                             isLastPage = true
                         } else {
+                            adapter?.addItems(it.list)
                             adapter?.addLoading()
                         }
                         isLoading = false
