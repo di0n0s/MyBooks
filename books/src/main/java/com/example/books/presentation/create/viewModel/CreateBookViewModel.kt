@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,7 +54,7 @@ class CreateBookViewModel @Inject constructor(
             _createBookState.value = try {
                 val response = withContext(ioDispatcher) { dao.insertBook(book) }
                 if (response >= 1) {
-                    CreateBookState.Success
+                    CreateBookState.Success(book.id)
                 } else {
                     CreateBookState.Error((getApplication() as Context).getString(com.example.core.R.string.common_error))
                 }
@@ -73,7 +74,7 @@ sealed class UserIntent {
 sealed class CreateBookState {
     object Idle : CreateBookState()
     object Loading : CreateBookState()
-    object Success : CreateBookState()
+    data class Success(val bookId: UUID) : CreateBookState()
     data class Error(val error: String?) : CreateBookState()
 }
 

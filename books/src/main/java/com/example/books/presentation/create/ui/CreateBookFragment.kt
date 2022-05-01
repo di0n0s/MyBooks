@@ -11,12 +11,14 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.books.R
 import com.example.books.data.entity.BookEntity
 import com.example.books.databinding.FragmentCreateBookBinding
 import com.example.books.presentation.create.viewModel.CreateBookState
 import com.example.books.presentation.create.viewModel.CreateBookViewModel
 import com.example.books.presentation.create.viewModel.UserIntent
+import com.example.books.presentation.list.ui.CREATE_BOOK_ID_RESULT
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -62,7 +64,7 @@ class CreateBookFragment : Fragment() {
                         createButton?.isEnabled = false
                     }
                     is CreateBookState.Success -> {
-
+                        setResultAndReturnToLastFragment(it)
                     }
                     is CreateBookState.Error -> {
                         createButton?.isEnabled = true
@@ -79,6 +81,14 @@ class CreateBookFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setResultAndReturnToLastFragment(it: CreateBookState.Success) {
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(
+            CREATE_BOOK_ID_RESULT,
+            it.bookId
+        )
+        findNavController().popBackStack()
     }
 
     override fun onCreateView(

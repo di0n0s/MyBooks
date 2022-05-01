@@ -24,6 +24,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+
+const val CREATE_BOOK_ID_RESULT = "CREATE_BOOK_ID_RESULT"
 
 @AndroidEntryPoint
 class BookListFragment : Fragment() {
@@ -79,6 +82,7 @@ class BookListFragment : Fragment() {
         setToolbar()
         getFirstPage()
         setOnClickListener()
+        onNavigationResult()
         return binding?.root
     }
 
@@ -130,6 +134,16 @@ class BookListFragment : Fragment() {
                 .fromUri(getString(com.example.core.R.string.create_book_fragment_uri).toUri())
                 .build()
             findNavController().navigate(request)
+        }
+    }
+
+    private fun onNavigationResult() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<UUID>(
+            CREATE_BOOK_ID_RESULT
+        )?.observe(viewLifecycleOwner) { result ->
+            lifecycleScope.launch {
+
+            }
         }
     }
 
