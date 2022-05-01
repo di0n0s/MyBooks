@@ -9,8 +9,8 @@ import java.util.*
 @Dao
 interface BooksDao {
 
-    @Query("SELECT * FROM books")
-    fun getBookList(): List<BookEntity>
+    @Query("SELECT * FROM books  LIMIT :pageSize OFFSET :start")
+    fun getBookList(start: Int, pageSize: Int): List<BookEntity>
 
     @Query("SELECT * FROM books WHERE id = :id")
     suspend fun getBook(

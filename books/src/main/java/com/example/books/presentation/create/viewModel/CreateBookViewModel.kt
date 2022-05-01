@@ -5,24 +5,21 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.data.entity.BookEntity
-import com.example.books.data.room.BooksDao
-import com.example.books.di.IoDispatcher
+import com.example.books.data.source.BooksDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class CreateBookViewModel @Inject constructor(
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val dao: BooksDao,
+    @Named("BooksRoomDataSource") private val roomDataSource: BooksDataSource,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -52,8 +49,8 @@ class CreateBookViewModel @Inject constructor(
             _createBookState.value = CreateBookState.Loading
 
             _createBookState.value = try {
-                val response = withContext(ioDispatcher) { dao.insertBook(book) }
-                if (response >= 1) {
+                val isInserted = roomDataSource.insertBook(book)
+                if (isInserted) {
                     CreateBookState.Success(book.id)
                 } else {
                     CreateBookState.Error((getApplication() as Context).getString(com.example.core.R.string.common_error))
@@ -63,7 +60,6 @@ class CreateBookViewModel @Inject constructor(
             }
         }
     }
-
 
 }
 
