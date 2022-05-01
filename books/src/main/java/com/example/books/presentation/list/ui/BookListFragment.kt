@@ -60,7 +60,9 @@ class BookListFragment : Fragment() {
             viewModel.bookListState.collect {
                 when (it) {
                     GetPagedBookListState.Idle -> {}
-                    GetPagedBookListState.Loading -> {}
+                    GetPagedBookListState.Loading -> {
+                        isLoading = true
+                    }
                     is GetPagedBookListState.Success -> {
                         adapter?.removeLoading()
                         adapter?.addItems(it.list)
@@ -71,7 +73,9 @@ class BookListFragment : Fragment() {
                         }
                         isLoading = false
                     }
-                    is GetPagedBookListState.Error -> {}
+                    is GetPagedBookListState.Error -> {
+                        isLoading = false
+                    }
                 }
             }
         }
@@ -103,7 +107,6 @@ class BookListFragment : Fragment() {
         recyclerView?.addOnScrollListener(object :
             PaginationListener(recyclerView?.layoutManager as LinearLayoutManager, PAGE_SIZE) {
             override fun loadMoreItems() {
-                isLoading = true
                 lifecycleScope.launch {
                     viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
                 }
