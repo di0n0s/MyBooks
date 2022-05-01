@@ -46,6 +46,10 @@ class BookListFragment : Fragment() {
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
 
+    companion object {
+        private const val PAGE_SIZE = 20
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         collectState()
@@ -94,16 +98,14 @@ class BookListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = BookListAdapter(arrayListOf())
+        adapter = BookListAdapter(viewModel.bookListVo)
         recyclerView?.adapter = adapter
         recyclerView?.addOnScrollListener(object :
-            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager) {
+            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager, PAGE_SIZE) {
             override fun loadMoreItems() {
                 isLoading = true
-                val pageSize = this.pageSize
                 lifecycleScope.launch {
-                    val start = adapter?.itemCount
-                    viewModel.userIntent.send(UserIntent.GetPagedBookList(start, pageSize))
+                    viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
                 }
             }
 
@@ -122,9 +124,11 @@ class BookListFragment : Fragment() {
     }
 
     private fun getFirstPage() {
-        lifecycleScope.launch {
-            viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 20))
+        if (viewModel.bookListVo.isEmpty()) {
+            lifecycleScope.launch {
+                viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
 
+            }
         }
     }
 
@@ -138,12 +142,15 @@ class BookListFragment : Fragment() {
     }
 
     private fun onNavigationResult() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<UUID>(
+        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
+
+        savedStateHandle?.getLiveData<UUID>(
             CREATE_BOOK_ID_RESULT
         )?.observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch {
-
+                viewModel.userIntent.send(UserIntent.GetLastBookCreated(result))
             }
+            savedStateHandle.remove<UUID>(CREATE_BOOK_ID_RESULT)
         }
     }
 

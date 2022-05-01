@@ -5,6 +5,7 @@ import com.example.books.di.IoDispatcher
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 class BooksNetworkDataSource @Inject constructor(
@@ -12,15 +13,19 @@ class BooksNetworkDataSource @Inject constructor(
     private val apiService: MyBooksApiService
 ) : BooksDataSource {
 
-    override suspend fun getBookList(start: Int, loadSize: Int): List<Book> =
+    private var start = 1
+
+    override suspend fun getBookList(loadSize: Int): List<Book> =
         withContext(ioDispatcher) {
-            apiService.getBookList(
+            val data = apiService.getBookList(
                 start = start,
                 loadSize = loadSize
-            ).data.map { dto -> Book.fromBookListDto(dto) }
+            ).data
+            start += data.size
+            return@withContext data.map { dto -> Book.fromBookListDto(dto) }
         }
 
-    override suspend fun getBook(id: String): Book = withContext(ioDispatcher) {
+    override suspend fun getBook(id: UUID): Book = withContext(ioDispatcher) {
         val dto = apiService.getBook(id)
         return@withContext Book.fromBookDetailDto(dto)
     }

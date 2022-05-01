@@ -42,7 +42,7 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
     }
 
 
-    override suspend fun getBook(id: String): BookDetailDto {
+    override suspend fun getBook(id: UUID): BookDetailDto {
         TODO("Not yet implemented")
     }
 }
