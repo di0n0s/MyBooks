@@ -5,20 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.books.R
+import com.example.books.data.entity.BookEntity
 import com.example.books.databinding.FragmentCreateBookBinding
 import com.example.books.presentation.create.viewModel.CreateBookState
 import com.example.books.presentation.create.viewModel.CreateBookViewModel
+import com.example.books.presentation.create.viewModel.UserIntent
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+
 
 @AndroidEntryPoint
 class CreateBookFragment : Fragment() {
@@ -51,11 +58,24 @@ class CreateBookFragment : Fragment() {
             viewModel.createBookState.collect {
                 when (it) {
                     CreateBookState.Idle -> {}
-                    CreateBookState.Loading -> {}
-                    is CreateBookState.Success -> {
-                        //TODO notify list fragment call getBook
+                    CreateBookState.Loading -> {
+                        createButton?.isEnabled = false
                     }
-                    is CreateBookState.Error -> {}
+                    is CreateBookState.Success -> {
+
+                    }
+                    is CreateBookState.Error -> {
+                        createButton?.isEnabled = true
+                        view?.let { view ->
+                            it.error?.let { error ->
+                                Snackbar.make(
+                                    view,
+                                    error,
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -113,50 +133,69 @@ class CreateBookFragment : Fragment() {
     private fun onFocusChangedListeners() {
         titleTextInputEditText?.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                checkTitle()
+                isTitleEmpty()
             }
         }
 
         authorTextInputEditText?.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                checkAuthor()
+                isAuthorEmpty()
             }
         }
 
         priceTextInputEditText?.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                checkPrice()
+                isPriceEmpty()
             }
         }
     }
 
     private fun onTextChangedListeners() {
         titleTextInputEditText?.addTextChangedListener {
-            checkTitle()
+            isTitleEmpty()
         }
         authorTextInputEditText?.addTextChangedListener {
-            checkAuthor()
+            isAuthorEmpty()
         }
         priceTextInputEditText?.addTextChangedListener {
-            checkPrice()
+            isPriceEmpty()
         }
     }
 
     private fun setOnClickListeners() {
         createButton?.setOnClickListener {
-            if (checkTitle() && checkAuthor() && checkPrice()) {
-                //TODO save book
+            if (!isTitleEmpty() and !isAuthorEmpty() and !isPriceEmpty()) {
+                hideKeyboard()
+                lifecycleScope.launch {
+                    viewModel.userIntent.send(
+                        UserIntent.CreateBook(
+                            BookEntity(
+                                id = UUID.randomUUID(),
+                                title = titleTextInputEditText?.text.toString(),
+                                author = authorTextInputEditText?.text.toString(),
+                                price = priceTextInputEditText?.text.toString().toDouble(),
+                            )
+                        )
+                    )
+                }
             }
         }
     }
 
-    private fun checkTitle(): Boolean =
+    private fun hideKeyboard() {
+        view?.let { view ->
+            ViewCompat.getWindowInsetsController(view)
+                ?.hide(WindowInsetsCompat.Type.ime())
+        }
+    }
+
+    private fun isTitleEmpty(): Boolean =
         showErrorIfIsEmpty(titleTextInputLayout, titleTextInputEditText)
 
-    private fun checkAuthor(): Boolean =
+    private fun isAuthorEmpty(): Boolean =
         showErrorIfIsEmpty(authorTextInputLayout, authorTextInputEditText)
 
-    private fun checkPrice(): Boolean =
+    private fun isPriceEmpty(): Boolean =
         showErrorIfIsEmpty(priceTextInputLayout, priceTextInputEditText)
 
 }

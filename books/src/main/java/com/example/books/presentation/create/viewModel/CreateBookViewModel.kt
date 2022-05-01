@@ -1,20 +1,29 @@
 package com.example.books.presentation.create.viewModel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.data.entity.BookEntity
 import com.example.books.data.room.BooksDao
+import com.example.books.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateBookViewModel @Inject constructor(private val dao: BooksDao) : ViewModel() {
+class CreateBookViewModel @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dao: BooksDao,
+    application: Application
+) : AndroidViewModel(application) {
 
     val userIntent = Channel<UserIntent>(Channel.UNLIMITED)
 
@@ -42,11 +51,11 @@ class CreateBookViewModel @Inject constructor(private val dao: BooksDao) : ViewM
             _createBookState.value = CreateBookState.Loading
 
             _createBookState.value = try {
-                val response = dao.insertBook(book)
-                if (response == 1L) {
+                val response = withContext(ioDispatcher) { dao.insertBook(book) }
+                if (response >= 1) {
                     CreateBookState.Success
                 } else {
-                    CreateBookState.Error("There was an error")
+                    CreateBookState.Error((getApplication() as Context).getString(com.example.core.R.string.common_error))
                 }
             } catch (e: Exception) {
                 CreateBookState.Error(e.localizedMessage)
