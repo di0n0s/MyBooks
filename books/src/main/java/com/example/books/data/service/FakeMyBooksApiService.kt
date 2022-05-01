@@ -2,7 +2,6 @@ package com.example.books.data.service
 
 import com.example.books.data.dto.BookDetailDto
 import com.example.books.data.dto.BookListDto
-import com.example.books.data.dto.BookListResponse
 import java.util.*
 import javax.inject.Inject
 
@@ -16,7 +15,7 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
         }
     }
 
-    override suspend fun getBookList(start: Int?, loadSize: Int?): BookListResponse {
+    override suspend fun getBookList(start: Int?, loadSize: Int?): List<BookListDto> {
         var loadSizeNumber = 100
         var startNumber = 0
 
@@ -34,11 +33,7 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
 
         val toIndex = startNumber + loadSizeNumber
 
-        val subList = list.subList(startNumber, toIndex)
-
-        val remainingBooks = list.size - toIndex
-
-        return BookListResponse(subList, remainingBooks)
+        return list.subList(startNumber, toIndex)
     }
 
 

@@ -2,26 +2,22 @@ package com.example.books.presentation.list.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.room.BooksDao
-import com.example.books.data.source.BooksDataSource
+import com.example.books.data.BooksRepository
+import com.example.books.data.DataSource
 import com.example.books.presentation.list.vo.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class BookListViewModel @Inject constructor(
-    @Named("BooksNetworkDataSource") private val booksNetworkDataSource: BooksDataSource,
-    private val dao: BooksDao
+    private val repository: BooksRepository
 ) : ViewModel() {
 
     val userIntent = Channel<UserIntent>(Channel.UNLIMITED)
@@ -53,7 +49,7 @@ class BookListViewModel @Inject constructor(
 
             _bookListState.value = try {
                 val response =
-                    booksNetworkDataSource.getBookList(loadSize).map { book ->
+                    repository.getBookList(loadSize).map { book ->
                         BookPaginationVo.BookVo(
                             id = book.id.toString(),
                             title = book.title
@@ -71,7 +67,7 @@ class BookListViewModel @Inject constructor(
             _bookListState.value = GetPagedBookListState.Loading
 
             _bookListState.value = try {
-                val book = withContext(Dispatchers.IO) { dao.getBook(id) }
+                val book = repository.getBook(DataSource.ROOM, true, id)
                 val bookVo = BookPaginationVo.BookVo(id = book.id.toString(), title = book.title)
                 GetPagedBookListState.Success(listOf(bookVo))
             } catch (e: Exception) {
