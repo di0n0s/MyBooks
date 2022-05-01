@@ -119,7 +119,7 @@ class BookListFragment : Fragment() {
 
     private fun getFirstPage() {
         lifecycleScope.launch {
-            viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 10))
+            viewModel.userIntent.send(UserIntent.GetPagedBookList(1, 20))
 
         }
     }
