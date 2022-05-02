@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
@@ -69,7 +69,9 @@ class BookListFragment : Fragment() {
                             isLastPage = true
                         } else {
                             adapter?.addItems(it.list)
-                            adapter?.addLoading()
+                            if (!isLastPage) {
+                                adapter?.addLoading()
+                            }
                         }
                         isLoading = false
                     }
@@ -104,8 +106,9 @@ class BookListFragment : Fragment() {
     private fun initAdapter() {
         adapter = BookListAdapter(viewModel.bookListVo)
         recyclerView?.adapter = adapter
+        setSpanSize()
         recyclerView?.addOnScrollListener(object :
-            PaginationListener(recyclerView?.layoutManager as LinearLayoutManager, PAGE_SIZE) {
+            PaginationListener(recyclerView?.layoutManager as GridLayoutManager, PAGE_SIZE) {
             override fun loadMoreItems() {
                 lifecycleScope.launch {
                     viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
@@ -119,6 +122,21 @@ class BookListFragment : Fragment() {
         })
     }
 
+    private fun setSpanSize() {
+        (recyclerView?.layoutManager as GridLayoutManager).spanSizeLookup =
+            object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+
+                    return when (adapter?.getItemViewType(position)) {
+                        BookListAdapter.VIEW_TYPE_NORMAL -> 1
+                        BookListAdapter.VIEW_TYPE_LOADING -> 3
+                        else -> -1
+                    }
+                }
+
+            }
+    }
+
     private fun setToolbar() {
         (activity as AppCompatActivity?)?.apply {
             setSupportActionBar(binding?.toolbar)
@@ -130,7 +148,6 @@ class BookListFragment : Fragment() {
         if (viewModel.bookListVo.isEmpty()) {
             lifecycleScope.launch {
                 viewModel.userIntent.send(UserIntent.GetPagedBookList(PAGE_SIZE))
-
             }
         }
     }

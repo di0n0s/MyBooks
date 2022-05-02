@@ -1,19 +1,19 @@
 package com.example.books.presentation.list.adapter
 
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class PaginationListener(
-    private val linearLayoutManager: LinearLayoutManager,
+    private val layoutManager: GridLayoutManager,
     private val pageSize: Int
 ) : RecyclerView.OnScrollListener() {
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        val visibleItemCount: Int = linearLayoutManager.childCount
-        val totalItemCount: Int = linearLayoutManager.itemCount
-        val firstVisibleItemPosition: Int = linearLayoutManager.findFirstVisibleItemPosition()
+        val visibleItemCount: Int = layoutManager.childCount
+        val totalItemCount: Int = layoutManager.itemCount
+        val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
 
         if (!isLoading() && !isLastPage()) {
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount

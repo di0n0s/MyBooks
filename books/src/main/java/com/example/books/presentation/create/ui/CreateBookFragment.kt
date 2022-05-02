@@ -1,6 +1,7 @@
 package com.example.books.presentation.create.ui
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,6 +112,7 @@ class CreateBookFragment : Fragment() {
         authorTextInputEditText = binding?.authorInputEditText
         authorTextInputLayout = binding?.authorInputLayout
         priceTextInputEditText = binding?.priceInputEditText
+        priceTextInputEditText?.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(2))
         priceTextInputLayout = binding?.priceInputLayout
         createButton = binding?.createButton
     }
