@@ -6,6 +6,7 @@ import com.example.books.di.IoDispatcher
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.TestOnly
 import javax.inject.Inject
 
 class BooksRoomDataSource @Inject constructor(
@@ -35,4 +36,7 @@ class BooksRoomDataSource @Inject constructor(
     override suspend fun insertBook(book: BookEntity): Boolean = withContext(ioDispatcher) {
         return@withContext dao.insertBook(book) >= 1
     }
+
+    @TestOnly
+    fun getStart() : Int = start
 }

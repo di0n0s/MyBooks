@@ -30,6 +30,12 @@ navigation = "2.3.5"
 #Glide
 glide = "4.13.0"
 
+#JUnit
+jUnit = "4.13.2"
+
+#Mockito
+mockito = "4.1.0"
+
 [libraries]
 # Plugins
 androidGradle = { module = "com.android.tools.build:gradle ", version.ref = "buildTools" }
@@ -65,6 +71,7 @@ gsonConverter = { module = "com.squareup.retrofit2:converter-gson", version.ref 
 
 #Coroutines
 coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 #Room
 room = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -81,3 +88,9 @@ navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref =
 #Glide
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glideCompiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+
+#Junit
+jUnit = { module = "junit:junit", version.ref = "jUnit" }
+
+#Mockito
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }

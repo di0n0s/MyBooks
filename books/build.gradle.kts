@@ -83,6 +83,7 @@ dependencies {
 
     //Coroutines
     implementation(libs.coroutinesAndroid)
+    testImplementation(libs.coroutinesTest)
 
     //Room
     implementation(libs.room)
@@ -92,4 +93,10 @@ dependencies {
     //Glide
     implementation(libs.glide)
     kapt(libs.glideCompiler)
+
+    //JUnit
+    testImplementation(libs.jUnit)
+
+    //Mockito
+    testImplementation(libs.mockito)
 }
