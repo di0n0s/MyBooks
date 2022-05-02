@@ -1,13 +1,14 @@
-package com.example.books.data
+package com.example.books.data.repository
 
 import com.example.books.data.source.BooksDataSource
+import com.example.books.di.NetworkDataSource
+import com.example.books.di.RoomDataSource
 import com.example.books.domain.model.Book
 import javax.inject.Inject
-import javax.inject.Named
 
 class BooksRepository @Inject constructor(
-    @Named("BooksNetworkDataSource") private val networkDataSource: BooksDataSource,
-    @Named("BooksRoomDataSource") private val roomDataSource: BooksDataSource,
+    @NetworkDataSource private val networkDataSource: BooksDataSource,
+    @RoomDataSource private val roomDataSource: BooksDataSource,
 ) {
 
     suspend fun getBookList(loadSize: Int): List<Book> {

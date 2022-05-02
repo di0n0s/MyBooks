@@ -18,7 +18,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.BINARY)
@@ -32,6 +31,14 @@ annotation class IoDispatcher
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class MainDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NetworkDataSource
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class RoomDataSource
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -96,11 +103,11 @@ abstract class BooksModule {
     }
 
     @Binds
-    @Named("BooksNetworkDataSource")
+    @NetworkDataSource
     abstract fun bindBooksNetworkDataSource(booksNetworkDataSource: BooksNetworkDataSource): BooksDataSource
 
     @Binds
-    @Named("BooksRoomDataSource")
+    @RoomDataSource
     abstract fun bindBooksRoomDataSource(booksRoomDataSource: BooksRoomDataSource): BooksDataSource
 
     @Binds

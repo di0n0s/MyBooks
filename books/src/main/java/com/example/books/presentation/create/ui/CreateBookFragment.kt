@@ -123,6 +123,7 @@ class CreateBookFragment : Fragment() {
         (activity as AppCompatActivity?)?.apply {
             setSupportActionBar(binding?.toolbar)
             if (supportActionBar != null) {
+                supportActionBar?.title = getString(R.string.create_book_create_book)
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black)
             }

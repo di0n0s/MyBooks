@@ -2,7 +2,7 @@ package com.example.books.presentation.list.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.BooksRepository
+import com.example.books.data.repository.BooksRepository
 import com.example.books.presentation.list.vo.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
