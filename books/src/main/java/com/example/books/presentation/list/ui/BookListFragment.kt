@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -154,10 +152,7 @@ class BookListFragment : Fragment() {
 
     private fun setOnClickListener() {
         fab?.setOnClickListener {
-            val request = NavDeepLinkRequest.Builder
-                .fromUri(getString(com.example.core.R.string.create_book_fragment_uri).toUri())
-                .build()
-            findNavController().navigate(request)
+            findNavController().navigate(R.id.action_bookListFragment_to_createBookFragment)
         }
     }
 
