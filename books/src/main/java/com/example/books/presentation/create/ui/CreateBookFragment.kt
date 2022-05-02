@@ -185,7 +185,7 @@ class CreateBookFragment : Fragment() {
                                 id = UUID.randomUUID().toString(),
                                 title = titleTextInputEditText?.text.toString(),
                                 author = authorTextInputEditText?.text.toString(),
-                                price = priceTextInputEditText?.text.toString().toDouble(),
+                                price = priceTextInputEditText?.text.toString().toDouble()
                             )
                         )
                     )

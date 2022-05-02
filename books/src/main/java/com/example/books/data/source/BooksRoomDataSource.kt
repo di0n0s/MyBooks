@@ -21,11 +21,14 @@ class BooksRoomDataSource @Inject constructor(
         return@withContext list.map { dto -> Book.fromBookEntity(dto) }
     }
 
-    override suspend fun getBook(id: String, isForList: Boolean): Book = withContext(ioDispatcher) {
+    override suspend fun getBook(id: String): Book = withContext(ioDispatcher) {
         val entity = dao.getBook(id)
-        if (isForList) {
-            start += 1
-        }
+        return@withContext Book.fromBookEntity(entity)
+    }
+
+    override suspend fun getBookForList(id: String): Book = withContext(ioDispatcher) {
+        val entity = dao.getBook(id)
+        start += 1
         return@withContext Book.fromBookEntity(entity)
     }
 

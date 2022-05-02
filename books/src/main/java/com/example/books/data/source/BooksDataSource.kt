@@ -10,8 +10,11 @@ interface BooksDataSource {
     ): List<Book>
 
     suspend fun getBook(
-        id: String,
-        isForList: Boolean
+        id: String
+    ): Book
+
+    suspend fun getBookForList(
+        id: String
     ): Book
 
     suspend fun insertBook(book: BookEntity): Boolean

@@ -3,6 +3,7 @@ package com.example.books.domain.model
 import com.example.books.data.dto.BookDetailDto
 import com.example.books.data.dto.BookListDto
 import com.example.books.data.entity.BookEntity
+import java.text.DecimalFormat
 
 class Book private constructor(
     val id: String,
@@ -26,7 +27,7 @@ class Book private constructor(
                 id = dto.id,
                 title = dto.title,
                 author = dto.author,
-                price = """${dto.price} €""",
+                price = """${dto.price.formatPrice()} €""",
                 imageUrl = dto.imageUrl
             )
 
@@ -36,8 +37,13 @@ class Book private constructor(
                 id = entity.id,
                 title = entity.title,
                 author = entity.author,
-                price = """${entity.price} €""",
+                price = """${entity.price.formatPrice()} €""",
                 imageUrl = entity.imageUrl
             )
+
+        private fun Double.formatPrice(): String {
+            val format = DecimalFormat("0.#")
+            return format.format(this)
+        }
     }
 }

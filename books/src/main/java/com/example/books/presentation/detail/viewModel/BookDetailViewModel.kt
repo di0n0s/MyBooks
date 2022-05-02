@@ -44,7 +44,7 @@ class BookDetailViewModel @Inject constructor(
             _bookState.value = GetBookState.Loading
 
             _bookState.value = try {
-                val book = repository.getBook(null, false, id)
+                val book = repository.getBook(id)
                 GetBookState.Success(book)
             } catch (e: Exception) {
                 GetBookState.Error(e.localizedMessage)

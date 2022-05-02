@@ -24,9 +24,13 @@ class BooksNetworkDataSource @Inject constructor(
         return@withContext list.map { dto -> Book.fromBookListDto(dto) }
     }
 
-    override suspend fun getBook(id: String, isForList: Boolean): Book = withContext(ioDispatcher) {
+    override suspend fun getBook(id: String): Book = withContext(ioDispatcher) {
         val dto = apiService.getBook(id)
         return@withContext Book.fromBookDetailDto(dto)
+    }
+
+    override suspend fun getBookForList(id: String): Book {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insertBook(book: BookEntity): Boolean {

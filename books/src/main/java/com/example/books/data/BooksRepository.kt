@@ -19,23 +19,13 @@ class BooksRepository @Inject constructor(
         return list
     }
 
-    suspend fun getBook(dataSource: DataSource?, isForList: Boolean, id: String): Book {
-        return if (dataSource != null) {
-            when (dataSource) {
-                DataSource.ROOM -> roomDataSource.getBook(id, isForList)
-                DataSource.NETWORK -> networkDataSource.getBook(id, isForList)
-            }
-        } else {
-            return try {
-                roomDataSource.getBook(id, isForList)
-            } catch (e: Exception) {
-                networkDataSource.getBook(id, isForList)
-            }
+    suspend fun getBook(id: String): Book {
+        return try {
+            roomDataSource.getBook(id)
+        } catch (e: Exception) {
+            networkDataSource.getBook(id)
         }
     }
-}
 
-sealed class DataSource {
-    object ROOM : DataSource()
-    object NETWORK : DataSource()
+    suspend fun getBookForList(id: String): Book = roomDataSource.getBookForList(id)
 }

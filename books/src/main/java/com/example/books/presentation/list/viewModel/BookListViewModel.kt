@@ -3,7 +3,6 @@ package com.example.books.presentation.list.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.data.BooksRepository
-import com.example.books.data.DataSource
 import com.example.books.presentation.list.vo.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -63,7 +62,7 @@ class BookListViewModel @Inject constructor(
             _bookListState.value = GetPagedBookListState.Loading
 
             _bookListState.value = try {
-                val book = repository.getBook(DataSource.ROOM, true, id)
+                val book = repository.getBookForList(id)
                 val bookVo =
                     BookPaginationVo.BookVo.fromBook(book)
                 GetPagedBookListState.Success(listOf(bookVo))
