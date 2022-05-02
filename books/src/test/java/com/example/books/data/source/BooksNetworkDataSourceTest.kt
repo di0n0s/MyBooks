@@ -1,9 +1,10 @@
 package com.example.books.data.source
 
+import com.example.books.data.BookTestUtils.entity
+import com.example.books.data.BookTestUtils.listDto
+import com.example.books.data.MainCoroutineRule
 import com.example.books.data.dto.BookDetailDto
-import com.example.books.data.dto.BookListDto
 import com.example.books.data.service.MyBooksApiService
-import com.example.books.data.source.BookTestUtils.entity
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -21,12 +22,6 @@ class BooksNetworkDataSourceTest {
     private lateinit var dataSource: BooksNetworkDataSource
 
     private val ioDispatcher = TestCoroutineDispatcher()
-
-    private val listDto = BookListDto(
-        id = "id",
-        title = "title",
-        imageUrl = "imageUrl"
-    )
 
     private val detailDto = BookDetailDto(
         id = "id",
