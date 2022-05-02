@@ -3,6 +3,7 @@ package com.example.books.presentation.create.ui
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -97,6 +98,7 @@ class CreateBookFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         onInitView(inflater, container)
         setToolbar()
         onFocusChangedListeners()
@@ -120,13 +122,11 @@ class CreateBookFragment : Fragment() {
     private fun setToolbar() {
         (activity as AppCompatActivity?)?.apply {
             setSupportActionBar(binding?.toolbar)
-            supportActionBar?.title = getString(R.string.create_book_create_book)
+            if (supportActionBar != null) {
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black)
+            }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun showErrorIfIsEmpty(
@@ -182,7 +182,7 @@ class CreateBookFragment : Fragment() {
                     viewModel.userIntent.send(
                         UserIntent.CreateBook(
                             BookEntity(
-                                id = UUID.randomUUID(),
+                                id = UUID.randomUUID().toString(),
                                 title = titleTextInputEditText?.text.toString(),
                                 author = authorTextInputEditText?.text.toString(),
                                 price = priceTextInputEditText?.text.toString().toDouble(),
@@ -209,5 +209,17 @@ class CreateBookFragment : Fragment() {
 
     private fun isPriceEmpty(): Boolean =
         showErrorIfIsEmpty(priceTextInputLayout, priceTextInputEditText)
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            findNavController().popBackStack()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

@@ -2,7 +2,6 @@ package com.example.books.data
 
 import com.example.books.data.source.BooksDataSource
 import com.example.books.domain.model.Book
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -20,17 +19,18 @@ class BooksRepository @Inject constructor(
         return list
     }
 
-    suspend fun getBook(dataSource: DataSource?, isForList: Boolean, id: UUID): Book {
+    suspend fun getBook(dataSource: DataSource?, isForList: Boolean, id: String): Book {
         return if (dataSource != null) {
             when (dataSource) {
-                DataSource.ROOM -> roomDataSource.getBook(id, isForList)!!
-                DataSource.NETWORK -> networkDataSource.getBook(id, isForList)!!
+                DataSource.ROOM -> roomDataSource.getBook(id, isForList)
+                DataSource.NETWORK -> networkDataSource.getBook(id, isForList)
             }
         } else {
-            return roomDataSource.getBook(id, isForList) ?: networkDataSource.getBook(
-                id,
-                isForList
-            )!!
+            return try {
+                roomDataSource.getBook(id, isForList)
+            } catch (e: Exception) {
+                networkDataSource.getBook(id, isForList)
+            }
         }
     }
 }

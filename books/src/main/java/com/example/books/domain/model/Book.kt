@@ -3,10 +3,9 @@ package com.example.books.domain.model
 import com.example.books.data.dto.BookDetailDto
 import com.example.books.data.dto.BookListDto
 import com.example.books.data.entity.BookEntity
-import java.util.*
 
 class Book private constructor(
-    val id: UUID,
+    val id: String,
     val title: String,
     val imageUrl: String?,
     val author: String?,
@@ -27,7 +26,7 @@ class Book private constructor(
                 id = dto.id,
                 title = dto.title,
                 author = dto.author,
-                price = dto.price.toString(),
+                price = """${dto.price} €""",
                 imageUrl = dto.imageUrl
             )
 
@@ -37,7 +36,7 @@ class Book private constructor(
                 id = entity.id,
                 title = entity.title,
                 author = entity.author,
-                price = entity.price.toString(),
+                price = """${entity.price} €""",
                 imageUrl = entity.imageUrl
             )
     }

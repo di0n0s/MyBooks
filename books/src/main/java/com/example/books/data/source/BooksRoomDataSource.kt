@@ -6,7 +6,6 @@ import com.example.books.di.IoDispatcher
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import java.util.*
 import javax.inject.Inject
 
 class BooksRoomDataSource @Inject constructor(
@@ -22,7 +21,7 @@ class BooksRoomDataSource @Inject constructor(
         return@withContext list.map { dto -> Book.fromBookEntity(dto) }
     }
 
-    override suspend fun getBook(id: UUID, isForList: Boolean): Book = withContext(ioDispatcher) {
+    override suspend fun getBook(id: String, isForList: Boolean): Book = withContext(ioDispatcher) {
         val entity = dao.getBook(id)
         if (isForList) {
             start += 1

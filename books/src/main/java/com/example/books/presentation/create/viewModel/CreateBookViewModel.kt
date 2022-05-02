@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -70,7 +69,7 @@ sealed class UserIntent {
 sealed class CreateBookState {
     object Idle : CreateBookState()
     object Loading : CreateBookState()
-    data class Success(val bookId: UUID) : CreateBookState()
+    data class Success(val bookId: String) : CreateBookState()
     data class Error(val error: String?) : CreateBookState()
 }
 

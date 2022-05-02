@@ -2,11 +2,10 @@ package com.example.books.presentation.list.vo
 
 import android.content.res.Resources
 import com.example.books.domain.model.Book
-import java.util.*
 
 sealed class BookPaginationVo {
     class BookVo private constructor(
-        val id: UUID,
+        val id: String,
         val title: String,
         val imageUrl: String?,
     ) : BookPaginationVo() {
@@ -21,10 +20,7 @@ sealed class BookPaginationVo {
                 )
             }
         }
-
-
     }
-
 
     object Loading : BookPaginationVo()
 }

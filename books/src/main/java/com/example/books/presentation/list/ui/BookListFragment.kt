@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
+import com.example.books.presentation.detail.ui.ID_ARG
 import com.example.books.presentation.list.adapter.BookListAdapter
 import com.example.books.presentation.list.adapter.PaginationListener
 import com.example.books.presentation.list.viewModel.BookListViewModel
@@ -22,7 +24,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
 
 const val CREATE_BOOK_ID_RESULT = "CREATE_BOOK_ID_RESULT"
 
@@ -102,7 +103,9 @@ class BookListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = BookListAdapter(viewModel.bookListVo)
+        adapter = BookListAdapter(viewModel.bookListVo) {
+            goToDetail(it)
+        }
         recyclerView?.adapter = adapter
         setSpanSize()
         recyclerView?.addOnScrollListener(object :
@@ -118,6 +121,11 @@ class BookListFragment : Fragment() {
             override fun isLoading(): Boolean = isLoading
 
         })
+    }
+
+    private fun goToDetail(it: String) {
+        val bundle = bundleOf(ID_ARG to it)
+        findNavController().navigate(R.id.action_bookListFragment_to_bookDetailFragment, bundle)
     }
 
     private fun setSpanSize() {
@@ -159,13 +167,13 @@ class BookListFragment : Fragment() {
     private fun onNavigationResult() {
         val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
-        savedStateHandle?.getLiveData<UUID>(
+        savedStateHandle?.getLiveData<String>(
             CREATE_BOOK_ID_RESULT
         )?.observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch {
                 viewModel.userIntent.send(UserIntent.GetLastBookCreated(result))
             }
-            savedStateHandle.remove<UUID>(CREATE_BOOK_ID_RESULT)
+            savedStateHandle.remove<String>(CREATE_BOOK_ID_RESULT)
         }
     }
 

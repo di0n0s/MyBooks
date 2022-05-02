@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.books.data.entity.BookEntity
-import java.util.*
 
 @Dao
 interface BooksDao {
@@ -14,7 +13,7 @@ interface BooksDao {
 
     @Query("SELECT * FROM books WHERE id = :id")
     suspend fun getBook(
-        id: UUID,
+        id: String
     ): BookEntity
 
     @Insert

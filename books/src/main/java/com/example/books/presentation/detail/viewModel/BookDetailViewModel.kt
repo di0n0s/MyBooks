@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,7 +39,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
 
-    private fun getBook(id: UUID) {
+    private fun getBook(id: String) {
         viewModelScope.launch {
             _bookState.value = GetBookState.Loading
 
@@ -56,7 +55,7 @@ class BookDetailViewModel @Inject constructor(
 }
 
 sealed class UserIntent {
-    data class GetBook(val id: UUID) : UserIntent()
+    data class GetBook(val id: String) : UserIntent()
 }
 
 sealed class GetBookState {
