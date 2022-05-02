@@ -6,4 +6,5 @@ import java.util.*
 data class BookListDto(
     @SerializedName("id") val id: UUID,
     @SerializedName("title") val title: String,
+    @SerializedName("image") val imageUrl: String
 )

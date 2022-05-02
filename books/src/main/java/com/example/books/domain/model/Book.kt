@@ -19,7 +19,7 @@ class Book private constructor(
                 title = dto.title,
                 author = null,
                 price = null,
-                imageUrl = null
+                imageUrl = dto.imageUrl,
             )
 
         fun fromBookDetailDto(dto: BookDetailDto): Book =

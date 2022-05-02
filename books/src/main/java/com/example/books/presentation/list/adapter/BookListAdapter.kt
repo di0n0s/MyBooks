@@ -13,8 +13,8 @@ class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
     private var isLoaderVisible = false
 
     companion object {
-        private const val VIEW_TYPE_LOADING = 0
-        private const val VIEW_TYPE_NORMAL = 1
+        const val VIEW_TYPE_LOADING = 0
+        const val VIEW_TYPE_NORMAL = 1
     }
 
 
@@ -61,5 +61,6 @@ class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
             notifyItemRemoved(list.size - 1)
         }
     }
+
 
 }

@@ -50,10 +50,7 @@ class BookListViewModel @Inject constructor(
             _bookListState.value = try {
                 val response =
                     repository.getBookList(loadSize).map { book ->
-                        BookPaginationVo.BookVo(
-                            id = book.id.toString(),
-                            title = book.title
-                        )
+                        BookPaginationVo.BookVo.fromBook(book)
                     }
                 GetPagedBookListState.Success(response)
             } catch (e: Exception) {
@@ -68,7 +65,8 @@ class BookListViewModel @Inject constructor(
 
             _bookListState.value = try {
                 val book = repository.getBook(DataSource.ROOM, true, id)
-                val bookVo = BookPaginationVo.BookVo(id = book.id.toString(), title = book.title)
+                val bookVo =
+                    BookPaginationVo.BookVo.fromBook(book)
                 GetPagedBookListState.Success(listOf(bookVo))
             } catch (e: Exception) {
                 GetPagedBookListState.Error(e.localizedMessage)

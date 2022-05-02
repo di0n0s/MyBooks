@@ -88,8 +88,8 @@ dependencies {
     implementation(libs.room)
     implementation(libs.roomKtx)
     kapt(libs.roomCompiler)
-    implementation(libs.roomPaging)
 
-    //Paging
-    implementation(libs.paging)
+    //Glide
+    implementation(libs.glide)
+    kapt(libs.glideCompiler)
 }
