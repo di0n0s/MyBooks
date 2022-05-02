@@ -1,7 +1,7 @@
 package com.example.books.data.source
 
-import com.example.books.data.entity.BookEntity
 import com.example.books.data.room.BooksDao
+import com.example.books.data.source.BookTestUtils.entity
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -20,15 +20,6 @@ class BooksRoomDataSourceTest {
 
     private val ioDispatcher = TestCoroutineDispatcher()
 
-    private val entity = BookEntity(
-        id = "id",
-        title = "title",
-        imageUrl = "imageUrl",
-        author = "author",
-        price = 2.01
-    )
-
-
     @Mock
     private lateinit var dao: BooksDao
 
@@ -46,7 +37,7 @@ class BooksRoomDataSourceTest {
     }
 
     @Test
-    fun `GIVEN an offset and loadSize WHEN getBookList is called THEN return a list of Book and start plus listSize`() =
+    fun `GIVEN a list of BookEntity WHEN getBookList is called THEN return a list of Book and start plus listSize`() =
         runBlockingTest {
             //GIVEN
             val start = dataSource.getStart()
@@ -73,7 +64,7 @@ class BooksRoomDataSourceTest {
         }
 
     @Test
-    fun `GIVEN an id WHEN getBook is called THEN return a Book and start is not changed`() =
+    fun `GIVEN a BookEntity WHEN getBook is called THEN return a Book and start is not changed`() =
         runBlockingTest {
             //GIVEN
             val start = dataSource.getStart()
@@ -98,7 +89,7 @@ class BooksRoomDataSourceTest {
         }
 
     @Test
-    fun `GIVEN an id WHEN getBook is called THEN return a Book and start plus one`() =
+    fun `GIVEN a BookEntity WHEN getBook is called THEN return a Book and start plus one`() =
         runBlockingTest {
             //GIVEN
             val start = dataSource.getStart()

@@ -6,6 +6,7 @@ import com.example.books.di.IoDispatcher
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.TestOnly
 import javax.inject.Inject
 
 class BooksNetworkDataSource @Inject constructor(
@@ -36,4 +37,7 @@ class BooksNetworkDataSource @Inject constructor(
     override suspend fun insertBook(book: BookEntity): Boolean {
         TODO("Not yet implemented")
     }
+
+    @TestOnly
+    fun getStart(): Int = start
 }
