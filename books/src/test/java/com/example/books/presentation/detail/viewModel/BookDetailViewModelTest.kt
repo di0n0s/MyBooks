@@ -38,7 +38,7 @@ class BookDetailViewModelTest {
     }
 
     @Test
-    fun `GIVE a book WHEN GetBook userIntent is sent THEN state change from Idle to Success`() =
+    fun `GIVEN a book WHEN GetBook userIntent is sent THEN state change from Idle to Success`() =
         runBlockingTest {
             //GIVEN
             val id = "id"
@@ -56,7 +56,7 @@ class BookDetailViewModelTest {
         }
 
     @Test
-    fun `GIVE an exception WHEN GetBook userIntent is sent THEN state change from Idle to Error`() =
+    fun `GIVEN an exception WHEN GetBook userIntent is sent THEN state change from Idle to Error`() =
         runBlockingTest {
             //GIVEN
             val id = "id"

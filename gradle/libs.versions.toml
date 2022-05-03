@@ -36,6 +36,9 @@ jUnit = "4.13.2"
 #Mockito
 mockito = "4.1.0"
 
+#Robolectric
+robolectric = "4.7.3"
+
 [libraries]
 # Plugins
 androidGradle = { module = "com.android.tools.build:gradle ", version.ref = "buildTools" }
@@ -94,3 +97,6 @@ jUnit = { module = "junit:junit", version.ref = "jUnit" }
 
 #Mockito
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+
+#Robolectric
+robolectric =  { module = "org.robolectric:robolectric", version.ref = "robolectric" }

@@ -99,4 +99,7 @@ dependencies {
 
     //Mockito
     testImplementation(libs.mockito)
+
+    //Robolectric
+    testImplementation(libs.robolectric)
 }
