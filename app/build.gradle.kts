@@ -15,7 +15,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.mybooks.runner.HiltTestRunner"
+
     }
 
     buildTypes {
@@ -51,5 +52,13 @@ dependencies {
     //Navigation
     implementation(libs.navigationFragment)
     implementation(libs.navigationUi)
+    androidTestImplementation(libs.navigationTesting)
+
+    //UI Test
+    androidTestImplementation(libs.hiltAndroidTesting)
+    kaptAndroidTest(libs.hiltAndroidCompiler)
+    debugImplementation(libs.fragmentTesting)
+    androidTestImplementation(libs.espresso)
+
 
 }

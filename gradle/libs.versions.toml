@@ -39,6 +39,12 @@ mockito = "4.1.0"
 #Robolectric
 robolectric = "4.7.3"
 
+#Fragment-testing
+fragmentTesting = "1.4.0"
+
+#Espresso
+espresso = "3.1.0"
+
 [libraries]
 # Plugins
 androidGradle = { module = "com.android.tools.build:gradle ", version.ref = "buildTools" }
@@ -60,6 +66,7 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 #Hilt
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "googleHilt" }
 hiltAndroidCompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googleHilt" }
+hiltAndroidTesting = { module = "com.google.dagger:hilt-android-testing", version.ref = "googleHilt" }
 
 #Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
@@ -87,6 +94,7 @@ fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragme
 #Navigation
 navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigationTesting = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
 
 #Glide
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -99,4 +107,12 @@ jUnit = { module = "junit:junit", version.ref = "jUnit" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 
 #Robolectric
-robolectric =  { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+#Fragment-testing
+fragmentTesting = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtx" }
+
+#Espresso
+espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+
+testRunner = { module = "androidx.test:runner", version.ref = "fragmentTesting" }
