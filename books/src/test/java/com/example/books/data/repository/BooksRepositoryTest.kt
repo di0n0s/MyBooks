@@ -1,7 +1,8 @@
 package com.example.books.data.repository
 
-import com.example.books.data.BookTestUtils.listDto
-import com.example.books.data.MainCoroutineRule
+import com.example.books.BookTestUtils.exception
+import com.example.books.BookTestUtils.listDto
+import com.example.books.MainCoroutineRule
 import com.example.books.data.source.BooksDataSource
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,9 +27,6 @@ class BooksRepositoryTest {
     @Mock
     private lateinit var roomDataSource: BooksDataSource
 
-    @Mock
-    private lateinit var throwable: RuntimeException
-
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
@@ -40,7 +38,7 @@ class BooksRepositoryTest {
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(networkDataSource, roomDataSource, throwable)
+        Mockito.verifyNoMoreInteractions(networkDataSource, roomDataSource)
     }
 
     @Test
@@ -83,7 +81,7 @@ class BooksRepositoryTest {
         runBlockingTest {
             //GIVEN
             val id = "id"
-            Mockito.`when`(roomDataSource.getBook(id)).thenThrow(throwable)
+            Mockito.`when`(roomDataSource.getBook(id)).thenThrow(exception)
             Mockito.`when`(networkDataSource.getBook(id)).thenReturn(book)
 
             //WHEN

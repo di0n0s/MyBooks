@@ -1,4 +1,4 @@
-package com.example.books.data
+package com.example.books
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
