@@ -7,19 +7,21 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.books.R
 import com.example.books.data.entity.BookEntity
 import com.example.books.databinding.FragmentCreateBookBinding
 import com.example.books.presentation.create.viewModel.CreateBookState
 import com.example.books.presentation.create.viewModel.CreateBookViewModel
 import com.example.books.presentation.create.viewModel.UserIntent
+import com.example.books.presentation.list.ui.CREATE_BOOK_ID_REQUEST
 import com.example.books.presentation.list.ui.CREATE_BOOK_ID_RESULT
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -86,11 +88,10 @@ class CreateBookFragment : Fragment() {
     }
 
     private fun setResultAndReturnToLastFragment(it: CreateBookState.Success) {
-        findNavController().previousBackStackEntry?.savedStateHandle?.set(
-            CREATE_BOOK_ID_RESULT,
-            it.bookId
+        setFragmentResult(
+            CREATE_BOOK_ID_REQUEST, bundleOf(CREATE_BOOK_ID_RESULT to it.bookId)
         )
-        findNavController().popBackStack()
+        parentFragmentManager.popBackStack()
     }
 
     override fun onCreateView(
@@ -213,7 +214,7 @@ class CreateBookFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            findNavController().popBackStack()
+            parentFragmentManager.popBackStack()
         }
         return super.onOptionsItemSelected(item)
     }

@@ -45,20 +45,21 @@ dependencies {
     //Kotlin
     implementation(libs.kotlinStdLib)
 
+    //AppCompat
+    implementation(libs.appCompat)
+
     //Hilt
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
-
-    //Navigation
-    implementation(libs.navigationFragment)
-    implementation(libs.navigationUi)
-    androidTestImplementation(libs.navigationTesting)
 
     //UI Test
     androidTestImplementation(libs.hiltAndroidTesting)
     kaptAndroidTest(libs.hiltAndroidCompiler)
     debugImplementation(libs.fragmentTesting)
     androidTestImplementation(libs.espresso)
+    androidTestImplementation(libs.espressoContrib) {
+        exclude(group = "com.google.android.material")
+    }
 
 
 }

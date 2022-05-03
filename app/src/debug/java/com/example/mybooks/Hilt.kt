@@ -9,6 +9,25 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import dagger.hilt.internal.Preconditions
 
+fun launchMainActivity(
+    @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
+) {
+
+    val mainActivityIntent = Intent.makeMainActivity(
+        ComponentName(
+            ApplicationProvider.getApplicationContext(),
+            MainActivity::class.java
+        )
+    )
+        .putExtra(
+            "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
+            themeResId
+        )
+
+    ActivityScenario.launch<MainActivity>(mainActivityIntent).onActivity {
+    }
+}
+
 inline fun <reified F : Fragment> launchFragmentInHiltContainer(
     args: Bundle? = null,
     @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,

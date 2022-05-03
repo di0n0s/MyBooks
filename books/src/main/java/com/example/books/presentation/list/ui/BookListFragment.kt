@@ -5,26 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
-import com.example.books.presentation.detail.ui.ID_ARG
 import com.example.books.presentation.list.adapter.BookListAdapter
 import com.example.books.presentation.list.adapter.PaginationListener
 import com.example.books.presentation.list.viewModel.BookListViewModel
 import com.example.books.presentation.list.viewModel.GetPagedBookListState
 import com.example.books.presentation.list.viewModel.UserIntent
+import com.example.core.NavigationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+const val CREATE_BOOK_ID_REQUEST = "CREATE_BOOK_ID_REQUEST"
 const val CREATE_BOOK_ID_RESULT = "CREATE_BOOK_ID_RESULT"
 
 @AndroidEntryPoint
@@ -44,6 +45,7 @@ class BookListFragment : Fragment() {
 
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
+    private val navigationViewModel: NavigationViewModel by activityViewModels()
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -124,8 +126,7 @@ class BookListFragment : Fragment() {
     }
 
     private fun goToDetail(it: String) {
-        val bundle = bundleOf(ID_ARG to it)
-        findNavController().navigate(R.id.action_bookListFragment_to_bookDetailFragment, bundle)
+        navigationViewModel.goToBookDetail(it)
     }
 
     private fun setSpanSize() {
@@ -160,20 +161,18 @@ class BookListFragment : Fragment() {
 
     private fun setOnClickListener() {
         fab?.setOnClickListener {
-            findNavController().navigate(R.id.action_bookListFragment_to_createBookFragment)
+            navigationViewModel.goToCreateBook()
         }
     }
 
     private fun onNavigationResult() {
-        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        savedStateHandle?.getLiveData<String>(
-            CREATE_BOOK_ID_RESULT
-        )?.observe(viewLifecycleOwner) { result ->
-            lifecycleScope.launch {
-                viewModel.userIntent.send(UserIntent.GetLastBookCreated(result))
+        setFragmentResultListener(CREATE_BOOK_ID_REQUEST) { _, bundle ->
+            val id = bundle.getString(CREATE_BOOK_ID_RESULT)
+            if (id != null) {
+                lifecycleScope.launch {
+                    viewModel.userIntent.send(UserIntent.GetLastBookCreated(id))
+                }
             }
-            savedStateHandle.remove<String>(CREATE_BOOK_ID_RESULT)
         }
     }
 

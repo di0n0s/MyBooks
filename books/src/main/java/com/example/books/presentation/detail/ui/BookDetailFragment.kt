@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.books.R
 import com.example.books.databinding.FragmentBookDetailBinding
@@ -121,7 +120,7 @@ class BookDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            findNavController().popBackStack()
+            parentFragmentManager.popBackStack()
         }
         return super.onOptionsItemSelected(item)
     }

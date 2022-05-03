@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
 
-    private val list = listOf(
+    val list = listOf(
         BookDetailDto(
             id = "1",
             imageUrl = "https://books.google.es/books/publisher/content?id=uYVbEAAAQBAJ&hl=es&pg=PP1&img=1&zoom=3&sig=ACfU3U2vgZLo7TnIx0OZnqZDg-pCzQyGxg&w=",

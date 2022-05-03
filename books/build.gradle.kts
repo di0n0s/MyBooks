@@ -61,10 +61,6 @@ dependencies {
     ///Material
     implementation(libs.material)
 
-    //Navigation
-    implementation(libs.navigationFragment)
-    implementation(libs.navigationUi)
-
     //FragmentKtx
     implementation(libs.fragmentKtx)
 

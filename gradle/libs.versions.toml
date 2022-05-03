@@ -6,7 +6,7 @@ googleHilt = "2.41"
 
 appCompat = "1.4.0"
 constraintLayout = "2.1.2"
-material = "1.6.0-alpha01"
+material = "1.5.0"
 
 retrofit = "2.9.0"
 okhttp3 = "4.9.3"
@@ -24,9 +24,6 @@ paging = "3.1.1"
 #Fragment-ktx
 fragmentKtx = "1.4.0"
 
-#Navigation
-navigation = "2.3.5"
-
 #Glide
 glide = "4.13.0"
 
@@ -43,7 +40,7 @@ robolectric = "4.7.3"
 fragmentTesting = "1.4.0"
 
 #Espresso
-espresso = "3.1.0"
+espresso = "3.4.0"
 
 [libraries]
 # Plugins
@@ -91,11 +88,6 @@ roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 #Fragment-ktx
 fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 
-#Navigation
-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
-navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-navigationTesting = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
-
 #Glide
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glideCompiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
@@ -114,5 +106,4 @@ fragmentTesting = { module = "androidx.fragment:fragment-testing", version.ref =
 
 #Espresso
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
-
-testRunner = { module = "androidx.test:runner", version.ref = "fragmentTesting" }
+espressoContrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
