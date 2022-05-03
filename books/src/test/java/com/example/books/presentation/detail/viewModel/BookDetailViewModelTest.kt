@@ -42,8 +42,8 @@ class BookDetailViewModelTest {
         runBlockingTest {
             //GIVEN
             val id = "id"
-            Mockito.`when`(repository.getBook(id)).thenReturn(book)
             val initialState = viewModel.bookState.value
+            Mockito.`when`(repository.getBook(id)).thenReturn(book)
 
             //WHEN
             viewModel.userIntent.send(UserIntent.GetBook(id))
