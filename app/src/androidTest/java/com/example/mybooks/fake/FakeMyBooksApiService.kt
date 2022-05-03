@@ -1,7 +1,8 @@
-package com.example.books.data.service
+package com.example.mybooks.fake
 
 import com.example.books.data.dto.BookDetailDto
 import com.example.books.data.dto.BookListDto
+import com.example.books.data.service.MyBooksApiService
 import javax.inject.Inject
 
 class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {

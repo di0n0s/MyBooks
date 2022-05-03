@@ -61,5 +61,10 @@ dependencies {
         exclude(group = "com.google.android.material")
     }
 
+    //Room
+    androidTestImplementation(libs.room)
+    androidTestImplementation(libs.roomKtx)
+    kapt(libs.roomCompiler)
+
 
 }
