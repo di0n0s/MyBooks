@@ -5,7 +5,6 @@ import com.example.books.BookTestUtils.entity
 import com.example.books.BookTestUtils.listDto
 import org.junit.Assert
 import org.junit.Test
-import java.text.DecimalFormat
 
 class BookTest {
 
@@ -38,7 +37,7 @@ class BookTest {
         Assert.assertEquals(detailDto.title, result.title)
         Assert.assertEquals(detailDto.author, result.author)
         Assert.assertEquals(detailDto.imageUrl, result.imageUrl)
-        Assert.assertEquals("""${detailDto.price.formatPrice()} €""", result.price)
+        Assert.assertEquals(detailDto.price, result.price)
     }
 
     @Test
@@ -54,11 +53,6 @@ class BookTest {
         Assert.assertEquals(entity.title, result.title)
         Assert.assertEquals(entity.author, result.author)
         Assert.assertEquals(entity.imageUrl, result.imageUrl)
-        Assert.assertEquals("""${entity.price.formatPrice()} €""", result.price)
-    }
-
-    private fun Double.formatPrice(): String {
-        val format = DecimalFormat("0.#")
-        return format.format(this)
+        Assert.assertEquals(entity.price, result.price)
     }
 }

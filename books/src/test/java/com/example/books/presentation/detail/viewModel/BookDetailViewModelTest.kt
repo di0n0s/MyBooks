@@ -5,16 +5,20 @@ import com.example.books.BookTestUtils.exception
 import com.example.books.MainCoroutineRule
 import com.example.books.data.repository.BooksRepository
 import com.example.books.domain.model.Book
+import com.example.books.presentation.detail.vo.BookDetailVo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.MockitoAnnotations
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE)
 class BookDetailViewModelTest {
 
     private lateinit var viewModel: BookDetailViewModel
@@ -29,6 +33,7 @@ class BookDetailViewModelTest {
 
     @Before
     fun setUp() {
+        MockitoAnnotations.openMocks(this)
         viewModel = BookDetailViewModel(repository)
     }
 
@@ -50,7 +55,14 @@ class BookDetailViewModelTest {
 
             //THEN
             Assert.assertEquals(initialState, GetBookState.Idle)
-            Assert.assertEquals(viewModel.bookState.value, GetBookState.Success(book))
+
+            val bookFromMap = BookDetailVo.fromBook(book)
+            val bookFromState = (viewModel.bookState.value as GetBookState.Success).book
+            Assert.assertEquals(bookFromMap.id, bookFromState.id)
+            Assert.assertEquals(bookFromMap.title, bookFromState.title)
+            Assert.assertEquals(bookFromMap.author, bookFromState.author)
+            Assert.assertEquals(bookFromMap.price, bookFromState.price)
+            Assert.assertEquals(bookFromMap.imageUrl, bookFromState.imageUrl)
 
             Mockito.verify(repository).getBook(id)
         }

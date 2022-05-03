@@ -15,10 +15,10 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.books.R
 import com.example.books.databinding.FragmentBookDetailBinding
-import com.example.books.domain.model.Book
 import com.example.books.presentation.detail.viewModel.BookDetailViewModel
 import com.example.books.presentation.detail.viewModel.GetBookState
 import com.example.books.presentation.detail.viewModel.UserIntent
+import com.example.books.presentation.detail.vo.BookDetailVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -66,7 +66,7 @@ class BookDetailFragment : Fragment() {
         }
     }
 
-    private fun renderUi(book: Book) {
+    private fun renderUi(book: BookDetailVo) {
         imageView?.let { imageView ->
             Glide.with(this)
                 .load(book.imageUrl)

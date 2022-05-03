@@ -3,7 +3,7 @@ package com.example.books.presentation.detail.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.data.repository.BooksRepository
-import com.example.books.domain.model.Book
+import com.example.books.presentation.detail.vo.BookDetailVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +45,7 @@ class BookDetailViewModel @Inject constructor(
 
             _bookState.value = try {
                 val book = repository.getBook(id)
-                GetBookState.Success(book)
+                GetBookState.Success(BookDetailVo.fromBook(book))
             } catch (e: Exception) {
                 GetBookState.Error(e.localizedMessage)
             }
@@ -61,6 +61,6 @@ sealed class UserIntent {
 sealed class GetBookState {
     object Idle : GetBookState()
     object Loading : GetBookState()
-    data class Success(val book: Book) : GetBookState()
+    data class Success(val book: BookDetailVo) : GetBookState()
     data class Error(val error: String?) : GetBookState()
 }
