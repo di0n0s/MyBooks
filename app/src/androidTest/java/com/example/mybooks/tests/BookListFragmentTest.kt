@@ -1,8 +1,5 @@
-package com.example.mybooks
+package com.example.mybooks.tests
 
-import android.content.Context
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -11,48 +8,21 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.books.R
-import com.example.books.data.room.BooksDao
 import com.example.books.di.DataBaseModule
 import com.example.books.presentation.list.ui.BookViewHolder
-import com.example.mybooks.fake.FakeAppDatabase
+import com.example.mybooks.launchMainActivity
 import com.example.mybooks.utils.EspressoUtils.waitFor
 import com.example.mybooks.utils.ScrollToBottomAction
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Singleton
 
 @UninstallModules(DataBaseModule::class)
 @HiltAndroidTest
 class BookListFragmentTest {
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    class DataBaseModuleTest {
-
-        @Provides
-        fun provideChannelDao(roomDatabase: RoomDatabase): BooksDao {
-            return (roomDatabase as FakeAppDatabase).booksDao()
-        }
-
-        @Provides
-        @Singleton
-        fun provideAppDatabase(@ApplicationContext appContext: Context): RoomDatabase {
-            return Room.databaseBuilder(
-                appContext,
-                FakeAppDatabase::class.java,
-                FakeAppDatabase::class.java.name
-            ).build()
-        }
-    }
 
     @get:Rule
     var hiltAndroidRule = HiltAndroidRule(this)
@@ -61,7 +31,6 @@ class BookListFragmentTest {
     fun setUp() {
         hiltAndroidRule.inject()
     }
-
 
     @Test
     fun when_fragmentIsLaunched_then_recyclerViewIsVisible() {
