@@ -25,7 +25,7 @@ object BookTestUtils {
         title = "title",
         imageUrl = "imageUrl",
         author = "author",
-        price = 2.21
+        price = 2.00
     )
 
     val exception = RuntimeException()
