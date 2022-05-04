@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,12 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
+import com.example.books.presentation.NavigationListener
 import com.example.books.presentation.list.adapter.BookListAdapter
 import com.example.books.presentation.list.adapter.PaginationListener
 import com.example.books.presentation.list.viewModel.BookListViewModel
 import com.example.books.presentation.list.viewModel.GetPagedBookListState
 import com.example.books.presentation.list.viewModel.UserIntent
-import com.example.core.NavigationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -42,10 +41,10 @@ class BookListFragment : Fragment() {
     private var adapter: BookListAdapter? = null
     private var isLoading = false
     private var isLastPage = false
+    private var navigation: NavigationListener? = null
 
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
-    private val navigationViewModel: NavigationViewModel by activityViewModels()
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -126,7 +125,7 @@ class BookListFragment : Fragment() {
     }
 
     private fun goToDetail(it: String) {
-        navigationViewModel.goToBookDetail(it)
+        navigation?.goToBookDetail(it)
     }
 
     private fun setSpanSize() {
@@ -161,7 +160,7 @@ class BookListFragment : Fragment() {
 
     private fun setOnClickListener() {
         fab?.setOnClickListener {
-            navigationViewModel.goToCreateBook()
+            navigation?.goToCreateBook()
         }
     }
 
@@ -174,6 +173,10 @@ class BookListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun setNavigationListener(listener: NavigationListener) {
+        navigation = listener
     }
 
     override fun onDestroyView() {
