@@ -42,4 +42,15 @@ dependencies {
     //Hilt
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp3)
+    implementation(libs.loginInterceptor)
+
+    //Gson
+    implementation(libs.gsonConverter)
+
+    //Coroutines
+    implementation(libs.coroutinesAndroid)
 }

@@ -2,8 +2,8 @@ package com.example.books.data.source
 
 import com.example.books.data.entity.BookEntity
 import com.example.books.data.room.BooksDao
-import com.example.books.di.IoDispatcher
 import com.example.books.domain.model.Book
+import com.example.core.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.TestOnly
@@ -38,5 +38,5 @@ class BooksRoomDataSource @Inject constructor(
     }
 
     @TestOnly
-    fun getStart() : Int = start
+    fun getStart(): Int = start
 }
