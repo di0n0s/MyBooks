@@ -11,8 +11,8 @@ import com.example.books.R
 import com.example.books.di.DataBaseModule
 import com.example.books.presentation.list.ui.BookViewHolder
 import com.example.mybooks.launchMainActivity
-import com.example.mybooks.utils.EspressoUtils.waitFor
 import com.example.mybooks.utils.ScrollToBottomAction
+import com.example.mybooks.utils.waitFor
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

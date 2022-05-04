@@ -66,5 +66,7 @@ dependencies {
     androidTestImplementation(libs.roomKtx)
     kapt(libs.roomCompiler)
 
+    ///Material
+    androidTestImplementation(libs.material)
 
 }
