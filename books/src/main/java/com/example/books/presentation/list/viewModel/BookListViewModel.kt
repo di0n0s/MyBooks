@@ -2,8 +2,7 @@ package com.example.books.presentation.list.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.BooksRepository
-import com.example.books.data.DataSource
+import com.example.books.data.repository.BooksRepository
 import com.example.books.presentation.list.vo.BookPaginationVo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,12 +57,12 @@ class BookListViewModel @Inject constructor(
         }
     }
 
-    private fun getLastBookCreated(id: UUID) {
+    private fun getLastBookCreated(id: String) {
         viewModelScope.launch {
             _bookListState.value = GetPagedBookListState.Loading
 
             _bookListState.value = try {
-                val book = repository.getBook(DataSource.ROOM, true, id)
+                val book = repository.getBookForList(id)
                 val bookVo =
                     BookPaginationVo.BookVo.fromBook(book)
                 GetPagedBookListState.Success(listOf(bookVo))
@@ -78,7 +76,7 @@ class BookListViewModel @Inject constructor(
 
 sealed class UserIntent {
     data class GetPagedBookList(val loadSize: Int) : UserIntent()
-    data class GetLastBookCreated(val id: UUID) : UserIntent()
+    data class GetLastBookCreated(val id: String) : UserIntent()
 }
 
 sealed class GetPagedBookListState {

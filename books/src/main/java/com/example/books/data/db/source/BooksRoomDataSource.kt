@@ -1,0 +1,43 @@
+package com.example.books.data.db.source
+
+import com.example.books.data.db.entity.BookEntity
+import com.example.books.data.db.room.BooksDao
+import com.example.books.data.source.BooksDataSource
+import com.example.books.domain.model.Book
+import com.example.core.di.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.TestOnly
+import javax.inject.Inject
+
+class BooksRoomDataSource @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dao: BooksDao
+) : BooksDataSource {
+
+    private var start = 0
+
+    override suspend fun getBookList(loadSize: Int): List<Book> = withContext(ioDispatcher) {
+        val list = dao.getBookList(start, loadSize)
+        start += list.size
+        return@withContext list.map { dto -> Book.fromBookEntity(dto) }
+    }
+
+    override suspend fun getBook(id: String): Book = withContext(ioDispatcher) {
+        val entity = dao.getBook(id)
+        return@withContext Book.fromBookEntity(entity)
+    }
+
+    override suspend fun getBookForList(id: String): Book = withContext(ioDispatcher) {
+        val entity = dao.getBook(id)
+        start += 1
+        return@withContext Book.fromBookEntity(entity)
+    }
+
+    override suspend fun insertBook(book: BookEntity): Boolean = withContext(ioDispatcher) {
+        return@withContext dao.insertBook(book) >= 1
+    }
+
+    @TestOnly
+    fun getStart(): Int = start
+}

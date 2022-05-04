@@ -5,16 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDeepLinkRequest
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.R
 import com.example.books.databinding.FragmentBookListBinding
+import com.example.books.presentation.NavigationListener
 import com.example.books.presentation.list.adapter.BookListAdapter
 import com.example.books.presentation.list.adapter.PaginationListener
 import com.example.books.presentation.list.viewModel.BookListViewModel
@@ -24,8 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
 
+const val CREATE_BOOK_ID_REQUEST = "CREATE_BOOK_ID_REQUEST"
 const val CREATE_BOOK_ID_RESULT = "CREATE_BOOK_ID_RESULT"
 
 @AndroidEntryPoint
@@ -42,6 +41,7 @@ class BookListFragment : Fragment() {
     private var adapter: BookListAdapter? = null
     private var isLoading = false
     private var isLastPage = false
+    private var navigation: NavigationListener? = null
 
     //ViewModel
     private val viewModel: BookListViewModel by viewModels()
@@ -65,12 +65,19 @@ class BookListFragment : Fragment() {
                     }
                     is GetPagedBookListState.Success -> {
                         adapter?.removeLoading()
-                        if (it.list.isEmpty()) {
-                            isLastPage = true
-                        } else {
-                            adapter?.addItems(it.list)
-                            if (!isLastPage) {
-                                adapter?.addLoading()
+                        when {
+                            it.list.isEmpty() -> {
+                                isLastPage = true
+                            }
+                            it.list.size < PAGE_SIZE -> {
+                                isLastPage = true
+                                adapter?.addItems(it.list)
+                            }
+                            else -> {
+                                adapter?.addItems(it.list)
+                                if (!isLastPage) {
+                                    adapter?.addLoading()
+                                }
                             }
                         }
                         isLoading = false
@@ -104,7 +111,9 @@ class BookListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = BookListAdapter(viewModel.bookListVo)
+        adapter = BookListAdapter(viewModel.bookListVo) {
+            goToDetail(it)
+        }
         recyclerView?.adapter = adapter
         setSpanSize()
         recyclerView?.addOnScrollListener(object :
@@ -120,6 +129,10 @@ class BookListFragment : Fragment() {
             override fun isLoading(): Boolean = isLoading
 
         })
+    }
+
+    private fun goToDetail(it: String) {
+        navigation?.goToBookDetail(it)
     }
 
     private fun setSpanSize() {
@@ -154,24 +167,23 @@ class BookListFragment : Fragment() {
 
     private fun setOnClickListener() {
         fab?.setOnClickListener {
-            val request = NavDeepLinkRequest.Builder
-                .fromUri(getString(com.example.core.R.string.create_book_fragment_uri).toUri())
-                .build()
-            findNavController().navigate(request)
+            navigation?.goToCreateBook()
         }
     }
 
     private fun onNavigationResult() {
-        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        savedStateHandle?.getLiveData<UUID>(
-            CREATE_BOOK_ID_RESULT
-        )?.observe(viewLifecycleOwner) { result ->
-            lifecycleScope.launch {
-                viewModel.userIntent.send(UserIntent.GetLastBookCreated(result))
+        setFragmentResultListener(CREATE_BOOK_ID_REQUEST) { _, bundle ->
+            val id = bundle.getString(CREATE_BOOK_ID_RESULT)
+            if (id != null && viewModel.bookListVo.isNotEmpty()) {
+                lifecycleScope.launch {
+                    viewModel.userIntent.send(UserIntent.GetLastBookCreated(id))
+                }
             }
-            savedStateHandle.remove<UUID>(CREATE_BOOK_ID_RESULT)
         }
+    }
+
+    fun setNavigationListener(listener: NavigationListener) {
+        navigation = listener
     }
 
     override fun onDestroyView() {

@@ -1,8 +1,7 @@
 package com.example.books.data.source
 
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 import com.example.books.domain.model.Book
-import java.util.*
 
 interface BooksDataSource {
 
@@ -11,9 +10,12 @@ interface BooksDataSource {
     ): List<Book>
 
     suspend fun getBook(
-        id: UUID,
-        isForList: Boolean
-    ): Book?
+        id: String
+    ): Book
+
+    suspend fun getBookForList(
+        id: String
+    ): Book
 
     suspend fun insertBook(book: BookEntity): Boolean
 

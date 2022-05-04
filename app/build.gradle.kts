@@ -15,7 +15,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.mybooks.runner.HiltTestRunner"
+
     }
 
     buildTypes {
@@ -48,8 +49,21 @@ dependencies {
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
 
-    //Navigation
-    implementation(libs.navigationFragment)
-    implementation(libs.navigationUi)
+    //UI Test
+    androidTestImplementation(libs.hiltAndroidTesting)
+    kaptAndroidTest(libs.hiltAndroidCompiler)
+    debugImplementation(libs.fragmentTesting)
+    androidTestImplementation(libs.espresso)
+    androidTestImplementation(libs.espressoContrib) {
+        exclude(group = "com.google.android.material")
+    }
+
+    //Room
+    androidTestImplementation(libs.room)
+    androidTestImplementation(libs.roomKtx)
+    kapt(libs.roomCompiler)
+
+    ///Material
+    implementation(libs.material)
 
 }

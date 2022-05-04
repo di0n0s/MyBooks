@@ -2,8 +2,9 @@ package com.example.books.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.books.data.room.AppDatabase
-import com.example.books.data.room.BooksDao
+import androidx.room.RoomDatabase
+import com.example.books.data.db.room.AppDatabase
+import com.example.books.data.db.room.BooksDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,13 +17,13 @@ import javax.inject.Singleton
 class DataBaseModule {
 
     @Provides
-    fun provideChannelDao(appDatabase: AppDatabase): BooksDao {
-        return appDatabase.booksDao()
+    fun provideChannelDao(roomDatabase: RoomDatabase): BooksDao {
+        return (roomDatabase as AppDatabase).booksDao()
     }
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
+    fun provideAppDatabase(@ApplicationContext appContext: Context): RoomDatabase {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,

@@ -4,8 +4,9 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 import com.example.books.data.source.BooksDataSource
+import com.example.books.di.RoomDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,13 +14,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class CreateBookViewModel @Inject constructor(
-    @Named("BooksRoomDataSource") private val roomDataSource: BooksDataSource,
+    @RoomDataSource private val roomDataSource: BooksDataSource,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -70,7 +69,7 @@ sealed class UserIntent {
 sealed class CreateBookState {
     object Idle : CreateBookState()
     object Loading : CreateBookState()
-    data class Success(val bookId: UUID) : CreateBookState()
+    data class Success(val bookId: String) : CreateBookState()
     data class Error(val error: String?) : CreateBookState()
 }
 

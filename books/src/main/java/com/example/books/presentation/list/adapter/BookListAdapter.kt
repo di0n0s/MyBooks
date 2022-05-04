@@ -7,8 +7,10 @@ import com.example.books.presentation.list.ui.ProgressViewHolder
 import com.example.books.presentation.list.vo.BookPaginationVo
 
 
-class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BookListAdapter(
+    private val list: ArrayList<BookPaginationVo>,
+    private val clickListener: (String) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoaderVisible = false
 
@@ -20,7 +22,11 @@ class BookListAdapter(private val list: ArrayList<BookPaginationVo>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is BookViewHolder) {
-            holder.bind(list[position] as BookPaginationVo.BookVo)
+            val bookVo = list[position] as BookPaginationVo.BookVo
+            holder.bind(bookVo)
+            holder.itemView.setOnClickListener {
+                clickListener(bookVo.id)
+            }
         }
     }
 
