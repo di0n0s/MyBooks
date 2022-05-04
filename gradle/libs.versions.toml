@@ -51,9 +51,6 @@ hiltGradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.
 #Kotlin
 kotlinStdLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 
-#AppCompat
-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
-
 #ConstraintLayout
 constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
 

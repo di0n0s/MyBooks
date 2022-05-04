@@ -1,7 +1,8 @@
-package com.example.books.data.source
+package com.example.books.data.network.source
 
-import com.example.books.data.entity.BookEntity
-import com.example.books.data.service.MyBooksApiService
+import com.example.books.data.db.entity.BookEntity
+import com.example.books.data.network.service.MyBooksApiService
+import com.example.books.data.source.BooksDataSource
 import com.example.books.domain.model.Book
 import com.example.core.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher

@@ -4,7 +4,8 @@ import com.example.books.BookTestUtils.detailDto
 import com.example.books.BookTestUtils.entity
 import com.example.books.BookTestUtils.listDto
 import com.example.books.MainCoroutineRule
-import com.example.books.data.service.MyBooksApiService
+import com.example.books.data.network.service.MyBooksApiService
+import com.example.books.data.network.source.BooksNetworkDataSource
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher

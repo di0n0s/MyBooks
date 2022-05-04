@@ -16,7 +16,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.books.R
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 import com.example.books.databinding.FragmentCreateBookBinding
 import com.example.books.presentation.create.viewModel.CreateBookState
 import com.example.books.presentation.create.viewModel.CreateBookViewModel

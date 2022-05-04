@@ -1,4 +1,4 @@
-package com.example.books.data.entity
+package com.example.books.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

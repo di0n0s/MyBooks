@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 import com.example.books.data.source.BooksDataSource
 import com.example.books.di.RoomDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel

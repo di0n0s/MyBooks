@@ -1,4 +1,4 @@
-package com.example.books.data.dto
+package com.example.books.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 

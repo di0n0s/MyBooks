@@ -1,7 +1,7 @@
-package com.example.books.data.service
+package com.example.books.data.network.service
 
-import com.example.books.data.dto.BookDetailDto
-import com.example.books.data.dto.BookListDto
+import com.example.books.data.network.dto.BookDetailDto
+import com.example.books.data.network.dto.BookListDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

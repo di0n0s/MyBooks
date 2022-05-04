@@ -3,7 +3,7 @@ package com.example.mybooks.fake.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.books.data.room.BooksDao
+import com.example.books.data.db.room.BooksDao
 import com.example.books.di.DataBaseModule
 import com.example.mybooks.fake.FakeAppDatabase
 import dagger.Module

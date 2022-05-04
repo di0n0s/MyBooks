@@ -1,9 +1,9 @@
-package com.example.books.data.room
+package com.example.books.data.db.room
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 
 @Dao
 interface BooksDao {

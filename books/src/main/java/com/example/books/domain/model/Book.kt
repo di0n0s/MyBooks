@@ -1,8 +1,8 @@
 package com.example.books.domain.model
 
-import com.example.books.data.dto.BookDetailDto
-import com.example.books.data.dto.BookListDto
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
+import com.example.books.data.network.dto.BookDetailDto
+import com.example.books.data.network.dto.BookListDto
 
 class Book private constructor(
     val id: String,

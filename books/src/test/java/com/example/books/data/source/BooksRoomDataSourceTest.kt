@@ -2,7 +2,8 @@ package com.example.books.data.source
 
 import com.example.books.BookTestUtils.entity
 import com.example.books.MainCoroutineRule
-import com.example.books.data.room.BooksDao
+import com.example.books.data.db.room.BooksDao
+import com.example.books.data.db.source.BooksRoomDataSource
 import com.example.books.domain.model.Book
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher

@@ -45,9 +45,6 @@ dependencies {
     //Kotlin
     implementation(libs.kotlinStdLib)
 
-    //AppCompat
-    implementation(libs.appCompat)
-
     //Hilt
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
@@ -67,6 +64,6 @@ dependencies {
     kapt(libs.roomCompiler)
 
     ///Material
-    androidTestImplementation(libs.material)
+    implementation(libs.material)
 
 }

@@ -3,8 +3,8 @@ package com.example.books.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.books.data.room.AppDatabase
-import com.example.books.data.room.BooksDao
+import com.example.books.data.db.room.AppDatabase
+import com.example.books.data.db.room.BooksDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

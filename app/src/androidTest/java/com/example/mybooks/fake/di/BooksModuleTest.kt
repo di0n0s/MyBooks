@@ -1,9 +1,9 @@
 package com.example.mybooks.fake.di
 
-import com.example.books.data.service.MyBooksApiService
+import com.example.books.data.db.source.BooksRoomDataSource
+import com.example.books.data.network.service.MyBooksApiService
+import com.example.books.data.network.source.BooksNetworkDataSource
 import com.example.books.data.source.BooksDataSource
-import com.example.books.data.source.BooksNetworkDataSource
-import com.example.books.data.source.BooksRoomDataSource
 import com.example.books.di.BooksModule
 import com.example.books.di.NetworkDataSource
 import com.example.books.di.RoomDataSource

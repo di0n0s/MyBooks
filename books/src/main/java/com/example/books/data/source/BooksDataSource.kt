@@ -1,6 +1,6 @@
 package com.example.books.data.source
 
-import com.example.books.data.entity.BookEntity
+import com.example.books.data.db.entity.BookEntity
 import com.example.books.domain.model.Book
 
 interface BooksDataSource {
