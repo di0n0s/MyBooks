@@ -296,7 +296,7 @@ class FakeMyBooksApiService @Inject constructor() : MyBooksApiService {
         var startNumber = 0
 
         if (start != null) {
-            startNumber = start - 1
+            startNumber = start
         }
 
         if (loadSize != null) {

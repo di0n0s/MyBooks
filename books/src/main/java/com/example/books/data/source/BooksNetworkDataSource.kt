@@ -14,7 +14,7 @@ class BooksNetworkDataSource @Inject constructor(
     private val apiService: MyBooksApiService
 ) : BooksDataSource {
 
-    private var start = 1
+    private var start = 0
 
     override suspend fun getBookList(loadSize: Int): List<Book> = withContext(ioDispatcher) {
         val list = apiService.getBookList(

@@ -174,7 +174,7 @@ class BookListFragment : Fragment() {
     private fun onNavigationResult() {
         setFragmentResultListener(CREATE_BOOK_ID_REQUEST) { _, bundle ->
             val id = bundle.getString(CREATE_BOOK_ID_RESULT)
-            if (id != null) {
+            if (id != null && viewModel.bookListVo.isNotEmpty()) {
                 lifecycleScope.launch {
                     viewModel.userIntent.send(UserIntent.GetLastBookCreated(id))
                 }

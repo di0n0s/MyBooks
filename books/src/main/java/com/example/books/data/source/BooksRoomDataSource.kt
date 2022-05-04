@@ -14,7 +14,7 @@ class BooksRoomDataSource @Inject constructor(
     private val dao: BooksDao
 ) : BooksDataSource {
 
-    private var start = 1
+    private var start = 0
 
     override suspend fun getBookList(loadSize: Int): List<Book> = withContext(ioDispatcher) {
         val list = dao.getBookList(start, loadSize)
