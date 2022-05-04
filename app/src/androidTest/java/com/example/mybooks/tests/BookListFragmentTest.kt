@@ -8,6 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.books.R
+import com.example.books.di.BooksModule
 import com.example.books.di.DataBaseModule
 import com.example.books.presentation.list.ui.BookViewHolder
 import com.example.mybooks.launchMainActivity
@@ -20,7 +21,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@UninstallModules(DataBaseModule::class)
+@UninstallModules(DataBaseModule::class, BooksModule::class)
 @HiltAndroidTest
 class BookListFragmentTest {
 

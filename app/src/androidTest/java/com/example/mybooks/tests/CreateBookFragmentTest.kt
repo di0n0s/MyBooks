@@ -7,17 +7,21 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.example.books.R
+import com.example.books.di.BooksModule
+import com.example.books.di.DataBaseModule
 import com.example.books.presentation.create.ui.CreateBookFragment
 import com.example.mybooks.launchFragmentInHiltContainer
 import com.example.mybooks.utils.hasTextInputLayoutErrorText
 import com.example.mybooks.utils.waitFor
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
+@UninstallModules(DataBaseModule::class, BooksModule::class)
 class CreateBookFragmentTest {
 
     @get:Rule
